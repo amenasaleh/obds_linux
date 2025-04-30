@@ -7,3 +7,5 @@ Download details
 	Go the directory to where the file needs to be downloaded through cd command
  	Type wget command, followed by space key and right click andto paste the address for the file to be downloaded	
 	Hit return (enter key)   
+
+This file was edited after it was uploaded to the online github repository, to test the git pull function.
