@@ -1,0 +1,9 @@
+Download details
+	Go to the ensembl website https://www.ensembl.org/Mus_musculus/Info/Index
+	CLick download FASTA or GTP link to go to the corresponding FASTA or GTP file
+	Choose the required file that needs to be downloaded
+	On the required file, Rgight click and copy the link
+	Go to the Git terminal
+	Go the directory to where the file needs to be downloaded through cd command
+ 	Type wget command, followed by space key and right click andto paste the address for the file to be downloaded	
+	Hit return (enter key)   
