@@ -1,0 +1,4 @@
+"0","ggplot( ChickWeight, aes(x=Time, y = weight, colour = Diet)) +"
+"0","          geom_point()+"
+"0","  geom_smooth(method = lm)+"
+"0","  facet_wrap(~Diet, nrow=2)"

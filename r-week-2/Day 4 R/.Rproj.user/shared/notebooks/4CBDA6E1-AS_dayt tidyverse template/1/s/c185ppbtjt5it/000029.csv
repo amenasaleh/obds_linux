@@ -1,0 +1,11 @@
+"0","# Copy the code chunk above and extend with more pipes"
+"0","library(ggplot2)"
+"0",""
+"0","iris_for_ggplot <- iris_raw %>%"
+"0","  mutate(sepal_area= sepal_length*sepal_width ) %>% "
+"0","  select(species, sepal_area) %>% "
+"0","  ggplot(aes(sepal_area)) + "
+"0","  geom_histogram (fill = species) + "
+"0","  labs(title=""Sepal area_Iris dataset"", x= ""Sepal area"", y=""Observation"") + theme(axis.text=element_text(size=9), axis.title = element_text(size=12))"
+"2","Error: object 'species' not found
+"

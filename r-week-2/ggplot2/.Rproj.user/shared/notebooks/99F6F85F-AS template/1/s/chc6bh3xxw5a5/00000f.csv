@@ -1,0 +1,4 @@
+"0","#| include: true"
+"0","ggplot(diamonds, aes(x = carat, y = price, colour = cut)) +"
+"0","  geom_point() +"
+"0","  geom_smooth()"

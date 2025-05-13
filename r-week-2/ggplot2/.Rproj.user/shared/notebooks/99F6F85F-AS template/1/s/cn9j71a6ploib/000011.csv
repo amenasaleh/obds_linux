@@ -1,0 +1,4 @@
+"0","ggsave(""ggplot_trial.pdf"","
+"0","       plot=gridExtra_plot, dpi = 300 )"
+"2","[38;5;232mSaving 7 x 7 in image[39m"
+"0","#can change width and height width=y height=x, in the save attributes"

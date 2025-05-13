@@ -1,0 +1,6 @@
+"0",""
+"0",""
+"0","ggplot(msleep, aes(x=order, fill = genus))+"
+"0","  geom_bar()+"
+"0","  labs(x=""Taxonomic order"", y= ""Frequency"", size =16)+"
+"0","  theme(axis.text.x =element_text(angle = 45, size = 10, hjust=1))"

@@ -1,0 +1,1 @@
+"0","plot(hclust_iris_ward, labels = NULL, hang =0.1, check = TRUE, axes = TRUE, frame.plot=FALSE, ann=TRUE, main =""Cluster Dendrogram"", sub =NULL, xlab=NULL, ylab = ""Height"" )"

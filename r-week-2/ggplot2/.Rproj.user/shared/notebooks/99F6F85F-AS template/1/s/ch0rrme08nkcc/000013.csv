@@ -1,0 +1,4 @@
+"0","#| fig-width: 12"
+"0","#| fig-height: 12"
+"0","library(gridExtra)"
+"0","gridExtra_plot <- gridExtra::grid.arrange(obds_msleep,obds_chickweight, obds_diamonds, ncol=1, nrow=3 )"

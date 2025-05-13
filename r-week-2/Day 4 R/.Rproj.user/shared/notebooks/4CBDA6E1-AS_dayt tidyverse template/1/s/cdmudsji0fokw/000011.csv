@@ -1,0 +1,6 @@
+"0","#base R way--not what we want today"
+"0","#iris_raw %>% select(!c(species)) %>% colMeans"
+"0","  "
+"0","#iris_raw %>% summarise(across(where(is.numeric))) %>% colmeans    --wrong code"
+"0",""
+"0","iris_raw %>% group_by (species) %>% summarise(across(where(is.numeric), mean))"

@@ -1,0 +1,1 @@
+"0","plot(x = pca_iris$x[,""PC1""], y = pca_iris$x[,""PC2""] , col =iris_hclust_ward_labels )"

@@ -1,0 +1,6 @@
+"0","# Copy the code chunk above and refine to address the issue"
+"0","iris_long2  <- iris_raw  %>% "
+"0","  mutate(id = as.character(row_number())) %>% "
+"0","  pivot_longer(where(is.numeric))"
+"0","  "
+"0","iris_long2"

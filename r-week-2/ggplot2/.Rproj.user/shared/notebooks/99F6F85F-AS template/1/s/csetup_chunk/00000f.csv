@@ -1,0 +1,17 @@
+"0","#| label: setup"
+"0","#| include: false"
+"0","knitr::opts_chunk$set(echo = TRUE)"
+"0","library(ggplot2)"
+"0","library(ggrepel)"
+"0","library(cowplot)"
+"0","library(patchwork)"
+"2","
+Attaching package: ‘patchwork’
+
+"
+"2","The following object is masked from ‘package:cowplot’:
+
+    align_plots
+
+"
+"0","library(gridExtra)"
