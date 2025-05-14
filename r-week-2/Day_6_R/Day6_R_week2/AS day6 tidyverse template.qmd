@@ -1,0 +1,214 @@
+---
+title: 'Template: Integrated exercise using the <i class="fab fa-r-project"></i> tidyverse'
+author: "Kevin Rue-Albrecht"
+date: "2023-06-09"
+date-format: long
+format: html
+---
+
+```{r}
+#| label: load-packages
+#| include: false
+
+library(tidyverse)
+library(readxl)
+```
+
+## Exercise
+
+### Part 1
+
+We provide you with an Excel file that contains gene expression data for the nine most highly variable genes in a pancreas cancer gene expression dataset (<https://portal.gdc.cancer.gov/projects/TCGA-PAAD>), as well as metadata for the individual samples and genes.
+
+- Import the gene expression matrix from the Excel file into the R session as a `tibble`.
+  Assign it to an object named `exprs_assay`.
+
+```{r}
+library( readxl  )
+excel_sheets("/project/shared/r/1_r_data_science/7-tidyverse-workflow/EH2011.xlsx")
+
+exprs_assay <- read_excel(path = "/project/shared/r/1_r_data_science/7-tidyverse-workflow/EH2011.xlsx", sheet = "exprs")
+
+#NOTE-click on the enliseted table to see the table in a new tab
+#NOTE=path can have only quoted file name if it is in the directory with you
+#NOTE-excel_sheets helps you know what are the sheets in it, you an also open it after copying it #and opening it.
+# wrong exprs_assay <- read_excel(excel_sheets("/project/shared/r/1_r_data_science/7-tidyverse-wor#kflow/EH2011.xlsx"))
+# wrong exprs_assay<- readxl_example("/project/shared/r/1_r_data_science/7-tidyverse-workflow/EH20#11.xlsx")
+
+```
+
+- Reshape the gene expression matrix in a tidy format.
+  Assign it to a new object `exprs_assay_long`.
+
+```{r}
+exprs_assay_long <- exprs_assay %>% pivot_longer(where(is.numeric), names_to = "name", values_to = "values")
+      
+exprs_assay_long
+#names_to= "patient_id", values_to="expression", pipe in rename(gene_name=gene) because we pivoted #by !gene, cannot change it so pipe its name change
+#pivot_longer(!gene)--everything except gene which is non-numeric, you want only numeric data
+```
+
+- Draw a histogram of gene expression levels for each gene in a separate facet.
+
+```{r}
+ggplot(exprs_assay_long, aes(x=values)) +
+  geom_histogram(aes(fill=gene), color="black") +
+  facet_wrap(~gene, nrow=3)+
+  theme (axis.title = element_text(size=12),
+         axis.text = element_text(size=8),
+         axis.line = element_line (linewidth = 0.5)
+         ) +
+    labs (title="Gene expression profile", x= "Patients", y ="Level of expression")
+
+#NOTE-when you fill with gene, species etc that is non-standard, you need to add it in aes, things #like colour are standard so do not need to be put under aes("")
+#x=expression, can be written too
+#facet_wrap(vars(gene=gene_name), labeller=label_both or label_context)
+#vars is best practice
+#facet_wrap (~gene_name) or ("gene-name")
+```
+
+## Exercise
+
+### Part 2
+
+- Import the sample metadata from the Excel file into the R session as a `tibble`.
+  Assign it to an object named `sample_info`.
+
+```{r}
+excel_sheets( "/project/shared/r/1_r_data_science/7-tidyverse-workflow/EH2011.xlsx"  )
+sample_info <-read_excel(path = "/project/shared/r/1_r_data_science/7-tidyverse-workflow/EH2011.xlsx", sheet = "sample_info") 
+sample_info
+```
+
+> Metadata key:
+> 
+> [NIH AJCC staging system](https://www.cancer.gov/publications/dictionaries/ca> ncer-terms/def/ajcc-staging-system)
+> 
+> - grade: how abnormal the cancer cells and tissue look under a microscope
+> - T: size of the tumor and any spread of cancer into nearby tissue
+> - N: spread of cancer to nearby lymph nodes
+> - M: metastasis (spread of cancer to other parts of the body)
+
+- Convert the four columns above to the factor type.
+
+```{r}
+# wrong sample_info <- sample_info %>% 
+#   wrong- factor ( c("grade", "T","N","M"))
+#you can also write mutate for each factor or consolidate as below
+
+sample_info <- sample_info %>% 
+  mutate(
+    grade = factor(grade),
+    T = factor(T),
+    N = factor(N),
+    M = factor(M)
+  )
+sample_info
+
+#you can also do sample_info <- sample_info %>% mutate(across(.cols=c(grade, T, N, M), .fns=factor))
+#note-here the columns mentioned above are changed into factor type.  grade, T, N, M are features with different levels as indicated by the #column values
+#even though you specify 7 types of levels, if it doesnt find the 7th one in the data, it will still work
+```
+
+- Combine sample information with gene expression data.
+  Assign the output to `exprs_sampleinfo`.
+
+```{r}
+#exprs_sampleinfo <- sample_info %>% mutate (Clinical symptoms = exprs_assay_long)
+
+exprs_sampleinfo <- sample_info %>% left_join(exprs_assay_long, by = join_by(unique_patient_ID == name))
+exprs_sampleinfo
+
+# wrong increases the column so much--exprs_sampleinfo <- sample_info %>% cross_join(exprs_assay_long)
+#you can also do --by =c("unique_patient_ID"="name"), but join_by is preferred
+
+#
+```
+
+## Exercise
+
+### Part 3
+
+- Identify the gene with the largest absolute difference in expression between male and female patients.
+
+```{r}
+exprs_sampleinfo %>%
+  select(sex, gene, values) %>% 
+  group_by(gene,sex) %>% 
+  summarise(mean_value = mean(values), .groups = "drop") %>% 
+  pivot_wider(names_from = sex, values_from = mean_value) %>% 
+  mutate(Difference = F - M) %>% 
+  slice_max(abs(Difference))
+#you can do the above in a shorter code ignoring group and summarise command
+#exprs_sampleinfo %>% select(sex, gene, values) %>% pivot_wider(names_from = sex, values_from =     #expression, values_fn=mean) %>% mutate(Difference = F - M) %>% slice_max(abs(Difference))
+
+
+#without the last slice command you can see all the 9 genes displayed
+#message fro summarise gruopued by sex ignored by .groups=drop
+#pivot_wider(names_from = sex, values_from = mean_value)
+#expression is values in select, group_by gene_name
+#Difference label as FminusM
+```
+
+- Visualise the expression of that gene across tumour grades.
+  Facet by `sex`.
+  Color by `T` score.
+
+```{r}
+table_for_ggplot <- exprs_sampleinfo %>% 
+  filter(gene == "XIST") 
+table_for_ggplot
+#gene or gene_name
+```
+
+```{r}
+ggplot(table_for_ggplot, aes(x=values)) +
+    geom_histogram(aes(fill=T), color="black") +
+    facet_wrap(~sex, nrow=2)+
+    theme (axis.title = element_text(size=12),
+         axis.text = element_text(size=8),
+         axis.line = element_line (linewidth = 0.5)
+       ) 
+     
+ggplot(table_for_ggplot, aes(x=grade, y=values, fill =T))+
+   geom_boxplot()+
+ facet_wrap("sex")
+
+
+ggplot(table_for_ggplot, aes(x=grade, y=values, fill =grade))+
+      geom_boxplot()+
+       facet_wrap("sex")
+
+ggplot(table_for_ggplot, aes(x=grade, y=values,    fill=grade))+geom_violin(scale="width")+geom_point()+facet_wrap("sex")
+
+#need to plot a box plot or violin plot or histogram
+```
+
+- Draw a heat map of all nine genes.
+  Remove labels as well as ticks for the x-axis.
+  Remove the panel grid and background.
+
+```{r}
+ggplot(exprs_sampleinfo, aes(x=unique_patient_ID, y=gene, fill =values)) +
+  geom_raster()
+
+
+#panel.background=element_blank(),
+#in facet_wrap= ("sex",scales="free_x") 
+#add theme here
+
+
+```
+
+- Repeat the heat map, grouping samples by sex.
+
+```{r}
+# Copy the code chunk above and tweak the aes(...) contents.
+
+
+ggplot(exprs_sampleinfo, aes(x=unique_patient_ID, y=gene, fill =values, )) +
+  geom_raster()+
+  facet_wrap(~sex, nrow=2)+scale_fill_gradient(low = "green", high ="red")
+
+#values here is the expression coloumn
+```

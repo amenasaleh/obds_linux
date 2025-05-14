@@ -1,2 +1,0 @@
-"0","iris_long2 %>% "
-"0"," pivot_wider(names_from = name, values_from = value)"

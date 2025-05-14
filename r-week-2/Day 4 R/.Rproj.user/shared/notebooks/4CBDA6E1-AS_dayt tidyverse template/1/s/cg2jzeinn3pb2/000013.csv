@@ -1,5 +1,0 @@
-"0","# Copy the code chunk above and extend with more pipes"
-"0","iris_raw %>%"
-"0","  mutate(sepal_area= sepal_length*sepal_width ) %>% "
-"0","  select(species, sepal_area) %>% "
-"0","  slice_max(sepal_area, n=5)"

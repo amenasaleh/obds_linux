@@ -1,0 +1,4 @@
+"0","     "
+"0","ggplot(table_for_ggplot, aes(x=grade, y=values, fill =T))+"
+"0","   geom_boxplot()+"
+"0"," facet_wrap(""sex"")"

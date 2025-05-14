@@ -1,0 +1,7 @@
+"0","ggplot(table_for_ggplot, aes(x=values)) +"
+"0","    geom_histogram(aes(fill=T), color=""black"") +"
+"0","    facet_wrap(~sex, nrow=2)+"
+"0","    theme (axis.title = element_text(size=12),"
+"0","         axis.text = element_text(size=8),"
+"0","         axis.line = element_line (linewidth = 0.5)"
+"0","       ) "

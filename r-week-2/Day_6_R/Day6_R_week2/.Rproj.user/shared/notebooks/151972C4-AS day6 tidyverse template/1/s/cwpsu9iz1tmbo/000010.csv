@@ -1,0 +1,3 @@
+"0","table_for_ggplot <- exprs_sampleinfo %>% "
+"0","  filter(gene == ""XIST"") "
+"0","table_for_ggplot"

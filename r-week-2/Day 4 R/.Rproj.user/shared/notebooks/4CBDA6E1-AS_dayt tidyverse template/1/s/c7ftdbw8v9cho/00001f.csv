@@ -1,7 +1,0 @@
-"0","#iris_long <- iris_raw %>% pivot_longer(across(where(cols(species, is.numeric)))"
-"0","#iris_long <- iris_raw %>% pivot_longer(cols(where(species, is.numeric)))"
-"0","#iris_long <- iris_raw %>% pivot_longer(cols(is.numeric))"
-"0","#iris_long <- iris_raw %>% pivot_longer(cols = starts_with (""sepal"", ""petal"", ""species""))"
-"0","#iris_long <- iris_raw %>% pivot_longer(starts_with (""sepal"", ""petal"", ""species""))"
-"0","iris_long <- iris_raw %>% pivot_longer(where(is.numeric))"
-"0","iris_long"

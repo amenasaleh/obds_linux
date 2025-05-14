@@ -1,0 +1,4 @@
+"0","iris %>% "
+"0","  mutate(ID = seq(1, nrow(iris))) %>% "
+"0","  unite(""FlowerID"", Species, ID, sep = ""_"") %>% "
+"0","  as_tibble()"

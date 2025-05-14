@@ -1,0 +1,7 @@
+"0","#exprs_sampleinfo <- sample_info %>% mutate (Clinical symptoms = exprs_assay_long)"
+"0",""
+"0","#exprs_sampleinfo <- sample_info %>% left_join(exprs_assay_long, by = ends_with(""name""))"
+"0",""
+"0","exprs_sampleinfo <- sample_info %>% cross_join(exprs_assay_long)"
+"0",""
+"0","exprs_sampleinfo"

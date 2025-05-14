@@ -1,0 +1,6 @@
+"0","# Copy the code chunk above and tweak the aes(...) contents."
+"0",""
+"0",""
+"0","ggplot(exprs_sampleinfo, aes(x=unique_patient_ID, y=gene, fill =values, )) +"
+"0","  geom_raster()+"
+"0","  facet_wrap(~sex, nrow=2)+scale_fill_gradient(low = ""green"", high =""red"")"

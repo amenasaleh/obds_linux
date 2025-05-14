@@ -1,0 +1,6 @@
+"0","iris %>%"
+"0","    mutate("
+"0","        ID = seq(1, nrow(iris)),"
+"0","        Flower.ID = paste0(Species, ID)"
+"0","        ) %>%"
+"0","    slice_head(n = 6)"

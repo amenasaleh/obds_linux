@@ -1,0 +1,5 @@
+"0","iris %>% "
+"0","    separate(Sepal.Length, c(""Sepal.Length.unit"", ""Sepal.Length.decimal""), sep = ""[.]"") %>%"
+"0","    select(c(""Sepal.Length.unit"", ""Sepal.Length.decimal"")) %>%"
+"0","    as_tibble()"
+"2","Warning: Expected 2 pieces. Missing pieces filled with `NA` in 17 rows [5, 8, 26, 27, 36, 41, 44, 50, 51, 61, 63, 79, 84, 86, 94, 120, 139]."

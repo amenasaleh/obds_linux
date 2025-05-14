@@ -1,2 +1,0 @@
-"0","# Copy the code chunk above and extend with more pipes"
-"0","iris_raw %>% group_by (species) %>% summarise(across(where(is.numeric), mean)) %>% filter( sepal_length < 6)"

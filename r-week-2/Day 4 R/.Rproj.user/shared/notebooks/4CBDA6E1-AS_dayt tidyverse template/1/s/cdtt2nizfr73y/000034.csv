@@ -1,8 +1,0 @@
-"0","library(dplyr)"
-"0","iris_raw %>% "
-"0","  group_by(species) %>% "
-"0","  summarise(mean_sepal_length = mean(sepal_length), "
-"0","            median_sepal_length = median(sepal_length),"
-"0","            minimum_sepal_length = min(sepal_length),"
-"0","            maximum_sepal_length = max(sepal_length)"
-"0","            )"

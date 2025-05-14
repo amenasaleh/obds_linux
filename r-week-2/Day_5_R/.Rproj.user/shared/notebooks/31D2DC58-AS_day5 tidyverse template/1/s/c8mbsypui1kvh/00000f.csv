@@ -1,0 +1,2 @@
+"0","tibble_joined <- left_join(tibble_1, tibble_2, by = ""ID"")"
+"0","tibble_joined"
