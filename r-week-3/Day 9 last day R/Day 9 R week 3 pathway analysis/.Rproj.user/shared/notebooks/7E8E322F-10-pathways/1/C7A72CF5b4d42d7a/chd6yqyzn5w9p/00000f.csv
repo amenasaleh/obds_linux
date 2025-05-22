@@ -1,0 +1,8 @@
+"0","multi_gostquery_results_obj <- gost(query = list(""upreg_genes"" = upreg_gene_ids,"
+"0","                                                 ""downreg_genes""= downreg_gene_ids),"
+"0","                                    organism = ""mmusculus"", "
+"0","                                    multi_query = FALSE,"
+"0","                                    exclude_iea = TRUE, "
+"0","                                    correction_method = ""g_SCS"", "
+"0","                                    domain_scope = ""custom_annotated"","
+"0","                                    custom_bg = all_gene_tested_ids)"

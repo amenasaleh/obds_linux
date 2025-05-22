@@ -1,0 +1,75 @@
+---
+title: "test_AS"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+```{r}
+library(ggplot2)
+library(ggrepel)
+library(cowplot)
+library(patchwork)
+library(gridExtra)
+```
+
+```{r}
+ggplot(diamonds, aes(x = carat, y = price, colour=cut)) +
+  geom_point(size=1)
+
+
+```
+
+```{r}
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point(size=0.1)
+```
+
+```{r}
+
+      obds_diamonds <- ggplot(diamonds, aes(x= carat, y=price, colour=cut))+
+         geom_point(size=0.1) +
+           geom_smooth() + theme(axis.title = element_text(size=12, face="bold"), axis.line = element_line(linewidth = 0.5),axis.ticks = element_line(size=1, linewidth = 0.5), axis.text=element_text(size=6), plot.title = element_text(size=20, hjust = 0.5), legend.key.size = unit(2, "mm"))+
+  labs(title = "DIAMONDS", x="CARAT", y="PRICE")
+
+        
+obds_chickweight <- ggplot(ChickWeight, aes(x=Time, y=weight, colour=Diet))+
+                             geom_point() +
+                             geom_smooth(method=lm, formula = y~x)+theme(axis.title = element_text(size=12, face="bold"), axis.line = element_line(linewidth = 0.5),axis.ticks = element_line(size=1, linewidth = 0.5), axis.text=element_text(size=6), plot.title = element_text(size=20, hjust = 0.5), legend.key.size = unit(2, "mm"))+
+  labs(title = "CHICKS", x="TIME", y="WEIGHT")
+
+
+
+cowplot::plot_grid(
+  obds_diamonds, obds_chickweight, 
+  labels = c("A","B"),
+  ncol = 2, 
+  nrow=1, rel_widths = c(1,1))
+
+
+
+```
+
+```{r}
+#HOW DO I CHANGE THE ANGLE OF THE AXIS TICKS AND THEIR LENGTHS?
+```

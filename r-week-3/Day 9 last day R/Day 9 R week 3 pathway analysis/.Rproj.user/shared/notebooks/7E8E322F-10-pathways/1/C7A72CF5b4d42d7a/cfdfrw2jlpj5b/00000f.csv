@@ -1,0 +1,5 @@
+"0","h_gene_sets <- msigdbr(species = ""Mus musculus"", # Either scientific or common name is acceptable"
+"0","                       category = ""H"")"
+"0",""
+"0","# If you want all the gene sets:"
+"0","# all_gene_sets = msigdbr(species = ""mouse"")"

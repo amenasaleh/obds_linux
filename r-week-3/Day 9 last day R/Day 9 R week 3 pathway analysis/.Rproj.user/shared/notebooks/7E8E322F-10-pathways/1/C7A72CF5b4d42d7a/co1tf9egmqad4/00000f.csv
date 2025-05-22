@@ -1,0 +1,4 @@
+"0","#| message: false"
+"0","options(bitmapType = 'cairo') # For rendering "
+"0","library(tidyverse)"
+"0","library(gprofiler2)"

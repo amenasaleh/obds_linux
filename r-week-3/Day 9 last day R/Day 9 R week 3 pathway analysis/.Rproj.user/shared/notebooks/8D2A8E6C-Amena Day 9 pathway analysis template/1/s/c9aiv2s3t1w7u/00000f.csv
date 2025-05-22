@@ -8,6 +8,7 @@
 "0","upreg_genes_df <- all_genes_df %>% dplyr::filter(padj<0.05 & log2FoldChange>1)"
 "0","downreg_genes_df <- all_genes_df %>% dplyr::filter(padj<0.05 & log2FoldChange>-1)"
 "0",""
+"0","#NOTE-df in file name"
 "0","#you can see that there are NA in padj values all_genes_df that you need to filter out"
 "0","##tidyverse to use with filter with pipe"
 "0","#do not use quotes with padj col names"

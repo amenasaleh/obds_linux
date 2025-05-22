@@ -1,0 +1,2 @@
+"0","ranks <- sort(ranks, decreasing = TRUE)"
+"0","plot(ranks)"

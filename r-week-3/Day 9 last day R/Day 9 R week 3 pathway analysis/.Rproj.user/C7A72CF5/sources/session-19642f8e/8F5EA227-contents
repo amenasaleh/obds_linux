@@ -1,0 +1,349 @@
+---
+title: "Template: Pathway and gene set enrichment analysis"
+author: "Updated from Charlie George"
+date: "23/10/2024"
+---
+
+- We will use the [**gprofiler2**](https://cran.r-project.org/web/packages/gprofiler2/index.html) R package to perform an over-representation analysis (ORA) on the output table of differentially expressed genes from DESeq2.
+
+- The major aims of this exercise is to get you used to reading online tool documentation, playing with different parameters of the relevant functions and interpreting outputs.
+
+# ORA
+
+### 1. Load libraries.
+
+```{r}
+options(bitmapType = 'cairo') # For rendering 
+library(dplyr)
+library(tidyverse)
+library(gprofiler2)
+```
+
+### 2. Read in output table of differentially expressed genes from DESeq2.
+
+```{r}
+all_genes_df <- read_csv("dds_results.csv")
+
+#Directly read out as dataframe by specifying the extension in file name to direct output to a #dataframe
+#since file is in my folder I did not add a path
+```
+- Check its dimensions and look at first few rows.
+
+```{r}
+#all_genes_df <- read_csv("dds_results.csv") %>% subset(!is.na(padj))
+dim(all_genes_df)
+
+class(all_genes_df)
+```
+
+```{r}
+ head(all_genes_df)
+```
+
+### 3. Create input gene lists.
+
+- Create these 3 data frames by subsetting the original one:
+  + **all_genes_tested_df** object containing table of all genes tested in the differential expression analysis, which will be the background set
+  + **upreg_genes_df** object containing all significantly upregulated genes ('padj' < 0.05 & 'log2FoldChange' > 1)
+  + **downreg_genes_df** object containing all significantly downregulated genes ('padj' < 0.05 & 'log2FoldChange' < -1)
+
+```{r}
+#all_genes_tested_df <-as.data.frame(all_genes_df) 
+  
+#upreg_genes_df <- as.data.frame(all_genes_df) %>% subset(padj<0.05 & log2FoldChange>1)
+
+#downreg_genes_df <- as.data.frame(all_genes_df) %>% subset(padj<0.05 & log2FoldChange>-1)
+
+all_genes_tested_df <- all_genes_df %>% dplyr::filter(!is.na(padj))
+upreg_genes_df <- all_genes_df %>% dplyr::filter(padj<0.05 & log2FoldChange>1)
+downreg_genes_df <- all_genes_df %>% dplyr::filter(padj<0.05 & log2FoldChange>-1)
+
+#NOTE-df in file name
+#you can see that there are NA in padj values all_genes_df that you need to filter out
+##tidyverse to use with filter with pipe
+#do not use quotes with padj col names
+
+```
+
+- Check the dimensions of the data frames.
+
+```{r}
+dim(all_genes_df)
+dim(all_genes_tested_df)
+dim(upreg_genes_df)
+dim(downreg_genes_df)
+```
+
+- From each of the 3 data frames, get a vector of the Ensembl ids.
+
+```{r}
+all_gene_tested_ids <- all_genes_tested_df %>% pull (gene_id)
+#all_gene_tested_ids#saw the list of gene ids
+
+upreg_gene_ids <- upreg_genes_df %>% pull (gene_id)
+#upreg_gene_ids
+
+downreg_gene_ids <- downreg_genes_df %>% pull (gene_id)
+#downreg_gene_ids
+
+#you need a vector of gene symbols for gost below so generated here
+#pull from dplyr tidyverse extracts single column from dataframe, tibble AS A VECTOR
+```
+
+### 4. Perform ORA using **gprofiler2**.
+
+a. First, we want to do ORA on upregulated genes (vs. all genes tested as background). What function from gprofiler2 should we use? What parameters of that function should we include or change? Look at the [documentation](https://cran.r-project.org/web/packages/gprofiler2/vignettes/gprofiler2.html). 
+
+```{r}
+?gost() # Get help for function
+
+# Write ORA query
+
+gost_results_obj <- gost(upreg_gene_ids, "mmusculus", 
+                         domain_scope= "custom_annotated", 
+                         custom_bg=all_gene_tested_ids,
+                         significant=TRUE, 
+                         correction_method = "g_SCS",
+                         sources = NULL
+                         )
+head(gost_results_obj)
+
+#head(gost_results_obj$result)
+#every gene has equal value, significance does not matter with this plot
+#domain scope is the background=custom_annotated gives more info on your genes''read #vignettes
+#g_SCS takes the GO term heirarchy into account and gives a more stricter analysis
+
+```
+
+- What type of object is the output? Explore contents.
+
+```{r}
+typeof(gost_results_obj)
+```
+
+b. Plot our results using a function from gprofiler2. Which one is it? 
+
+```{r}
+gostplot(gost_results_obj, capped = TRUE, interactive = TRUE)
+#<- publish_gostplot()
+```
+
+c. What does `as_short_link = TRUE` do in `gost()` function? 
+ANSWER-Returns results as short-links to the g:PRofiler web tool.
+
+```{r}
+#gost_results_obj_link <- gost_results_obj 
+
+
+
+gost_results_obj_link <- gost(upreg_gene_ids, "mmusculus", domain_scope= "custom_annotated", custom_bg=all_gene_tested_ids ,significant=TRUE, correction_method = "g_SCS",as_short_link = TRUE)
+
+gost_results_obj_link
+
+
+
+```
+
+d. Filter results table for gene sets with between 5-300 genes, inclusive. Examine results subset.
+
+```{r}
+#first bring out the nested results list from df  gost_results_obj
+gost_results_obj_filtered_df<- gost_results_obj$result 
+gost_results_obj_filtered_df <- gost_results_obj_filtered_df %>% filter( term_size >=5 & term_size <=300) %>% arrange(p_value)
+
+
+#using the original formula
+#gost_results_obj_filtered_df <- gost(upreg_gene_ids, "mmusculus", 
+                        # domain_scope= "custom_annotated", 
+                        # custom_bg=all_gene_tested_ids,
+                         #  significant=TRUE, 
+                         #  correction_method = "g_SCS",
+                        #   sources = NULL)
+#gostplot(gost_results_obj_filtered_df, capped = TRUE, interactive = TRUE)
+
+#Devika's method of copying and replacing data in results
+
+tmp <- gost_results_obj
+tmp$result <- gost_results_obj_filtered_df
+gostplot(tmp, capped = TRUE, interactive = TRUE)
+
+#note-copied the filtered data into the gost instead of the unfiltered data to see how it changes
+# <-  gost-results-obj is copied to tmp, you add the gost_results_obj filtered-df to the result of tmpto #change the plot.
+```
+
+e. Try querying multiple gene lists at the same time (up and down regulated genes) using the parameter to specify multiple queries.
+
+```{r}
+#query_gene_list <- c(upreg_gene_ids, downreg_gene_ids)#wrong-needs them to be named not a named list
+
+multi_gostquery_results_obj <- gost(list(upregulated=upreg_gene_ids, downregulated=downreg_gene_ids),
+                                    "mmusculus", multi_query = TRUE,
+                         domain_scope= "custom_annotated", 
+                         custom_bg=all_gene_tested_ids,
+                         significant=TRUE, 
+                         correction_method = "g_SCS",
+                         sources = NULL)
+
+ 
+#NOTE-multiple lists are provided as a list of named character vectors lists for multiple queries 
+```
+
+f. Can you plot these queries together?
+
+```{r}
+gostplot(multi_gostquery_results_obj, capped = TRUE, interactive = TRUE)
+```
+
+g. Output the `get_version_info()` to save the versions of the databases that were used for the analysis!
+```{r}
+get_version_info()
+```
+
+# GSEA
+
+- We will use the [**fgsea**](https://bioconductor.org/packages/release/bioc/vignettes/fgsea/inst/doc/fgsea-tutorial.html) R package to perform GSEA on the output table of differentially expressed genes from DESeq2.
+
+- The major aims of this exercise is to get you used to reading online tool documentation, playing with different parameters of the relevant functions and interpreting outputs.
+
+### 1. Load libraries.
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(fgsea)
+library(msigdbr)
+```
+
+### 2. Read in output table of differentially expressed genes from DESeq2.
+
+```{r}
+all_genes_df <- read_csv("dds_results.csv")
+```
+
+### 3. Create input gene list.
+
+- Create **all_genes_tested_df** object containing table of all genes tested in the differential expression analysis.
+
+```{r}
+
+all_genes_tested_df <- all_genes_df %>% dplyr::filter(!is.na(padj))
+#note remove na
+```
+
+- All we’ll care about later on is the gene identifier and a gene-level statistic to rank the genes i.e. log2FoldChange. Simplify table by getting just those columns.
+
+```{r}
+all_genes_tested_df <- all_genes_tested_df %>% select(gene_id,log2FoldChange)
+```
+
+- Check whether you have genes with multiple entries.
+
+```{r}
+any(duplicated(all_genes_tested_df$gene_id))
+```
+
+### 4. Obtain list of gene sets / pathways
+
+a. The `fgsea()` function requires (1) a list of gene sets / pathways to test enrichment of, and (2) a named vector of gene-level statistic (log2FoldChange), where the names should be the same as the gene names in the gene sets / pathways. First, let’s create our named vector of log2FoldChange values. 
+
+- See `?tibble::deframe` for help here. The `deframe()` function converts 2-column data frames to a named vector or list, using the first column as name and the second column as value.
+
+```{r}
+ranks <- deframe(all_genes_tested_df)
+plot(ranks)
+# each number is a gene id if you open in console
+```
+
+- Sort the genes based on the ranking metric.
+
+```{r}
+ranks <- sort(ranks, decreasing=TRUE)
+plot(ranks)
+```
+
+b. Obtain gene sets / pathways. Let’s use the [Hallmark gene sets from MSigDB](https://www.gsea-msigdb.org/gsea/msigdb/human/collections.jsp). "Hallmark gene sets summarise and represent specific well-defined biological states or processes and display coherent expression. These gene sets were generated by a computational methodology based on identifying overlaps between gene sets in other MSigDB collections and retaining genes that display coordinate expression." 
+
+We can either download GMT files directly from MSigDB or use the [misgidbr](https://cran.r-project.org/web/packages/msigdbr/index.html) R package. We'll do the latter. Check the [documentation](https://cran.r-project.org/web/packages/msigdbr/vignettes/msigdbr-intro.html) for the functions we need. 
+
+- Use a helper function from misgidbr to show the available species.
+
+```{r}
+msigdbr_species()
+#go to msig db website or use their package msiddbr
+```
+
+- Retrieve the hallmark gene sets as **h_gene_sets** object. 
+
+```{r}
+msigdbr_collections()
+h_gene_sets <- msigdbr(species="Mus musculus", category="H")
+```
+
+- What is the class of the output. Explore contents. 
+
+```{r}
+class(h_gene_sets)
+h_gene_sets
+```
+
+- Remove genes in `h_gene_sets` that were not considered in the differential expression analysis.
+
+```{r}
+h_gene_sets_filtered <- h_gene_sets %>% 
+  filter(ensembl_gene %in% all_genes_tested_df$gene_id)
+```
+
+- The `fgsea()` function accepts a **list** of gene sets. Create this list from **h_gene_sets** using base function `split()`.
+
+```{r}
+
+hallmark_list <- split(x = h_gene_sets_filtered$ensembl_gene,
+                       f = h_gene_sets_filtered$gs_name)
+```
+
+### 5. Perform GSEA using **fgsea**.
+
+```{r}
+
+
+set.seed(190)
+fgseaRes <- fgsea(pathways=hallmark_list, 
+                  stats=ranks, 
+                  maxSize=500)
+head(fgseaRes)
+```
+
+- Convert result to tibble and arrange by normalised enrichment score
+
+```{r}
+
+  fgseaResTidy <- fgseaRes %>%
+  as_tibble() %>%
+  arrange(desc(NES))
+fgseaResTidy
+```
+
+- Plot the normalized enrichment scores per pathway. Arrange the pathways based on NES using `reorder()`. Colour the bar indicating whether or not the gene set / pathway was significant. 
+
+```{r}
+#in r brackets r, height=10
+
+  
+  ggplot(fgseaResTidy, aes(NES, reorder(pathway, NES))) +
+  geom_col(aes(fill = padj < 0.05)) +
+  labs(x = "Normalized Enrichment Score", y = "",
+       title = "Hallmark pathways NES from GSEA") + 
+  theme_minimal()
+```
+
+# Output the `sessionInfo()` to have a record of packages used.
+
+```{r}
+sessionInfo()
+```
+
+# Knit your report into an HTML 
+
+- This is good practise as it creates a permanent record of your plots/analysis outputs that you can share.
+- This also makes sure your script runs without error from start to finish!
+

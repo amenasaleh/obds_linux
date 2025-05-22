@@ -1,0 +1,3 @@
+"0","all_gene_tested_ids <- all_genes_tested_df %>% pull(gene_id)"
+"0","upreg_gene_ids <- upreg_genes_df %>% pull(gene_id)"
+"0","downreg_gene_ids <- downreg_genes_df %>% pull(gene_id)"
