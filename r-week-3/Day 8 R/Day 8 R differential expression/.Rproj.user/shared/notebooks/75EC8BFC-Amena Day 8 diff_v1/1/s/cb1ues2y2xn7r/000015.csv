@@ -1,0 +1,8 @@
+"0","#order(factor(sample_info$cell_type))#this does not seem right"
+"0",""
+"0","levels(sample_info$cell_type)"
+"1","[1]"
+"1"," ""CD4"""
+"1"," ""CD8"""
+"1","
+"

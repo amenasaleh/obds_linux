@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Kevin Rue-Albrecht">
+<meta name="dcterms.date" content="2024-10-22">
+
+<title>Template: Differential expression analysis for RNA-seq data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Amena Day 8 diff expn template_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Amena Day 8 diff expn template_files/libs/quarto-html/quarto.js"></script>
+<script src="Amena Day 8 diff expn template_files/libs/quarto-html/popper.min.js"></script>
+<script src="Amena Day 8 diff expn template_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Amena Day 8 diff expn template_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Amena Day 8 diff expn template_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Amena Day 8 diff expn template_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Amena Day 8 diff expn template_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Amena Day 8 diff expn template_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Amena Day 8 diff expn template_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Template: Differential expression analysis for RNA-seq data</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Kevin Rue-Albrecht </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 22, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="exercise" class="level2">
+<h2 class="anchored" data-anchor-id="exercise">Exercise</h2>
+<section id="import-gene-data-and-metadata" class="level3">
+<h3 class="anchored" data-anchor-id="import-gene-data-and-metadata">Import gene data and metadata</h3>
+<ul>
+<li>Load the <code>tidyverse</code> package, and use the function <code>read_tsv()</code> to import count data from the file <code>allsamples_counts.tsv.gz</code> into a tibble called <code>featurecounts_table</code>. Display a preview of <code>featurecounts_table</code> using <code>glimpse()</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#MY </span><span class="al">NOTE</span><span class="co">-READ TSV AND ASSIGN TO MATRIX HERE!</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>featurecounts_table <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"/project/shared/r/1_r_data_science/9-de/allsamples_counts.tsv.gz"</span>, <span class="at">col_names =</span> <span class="cn">TRUE</span>, <span class="at">comment=</span><span class="st">"#"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 39179 Columns: 14
+── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: "\t"
+chr (5): Geneid, Chr, Start, End, Strand
+dbl (9): Length, ERR1755082.bam, ERR1755083.bam, ERR1755084.bam, ERR1755085.bam, ERR1755086.bam, ERR1755087.bam, ERR...
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(featurecounts_table )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 39,179
+Columns: 14
+$ Geneid         &lt;chr&gt; "ENSMUSG00000090025", "ENSMUSG00000064842", "ENSMUSG00000051951", "ENSMUSG00000089699", "ENSMUS…
+$ Chr            &lt;chr&gt; "1", "1", "1;1;1;1;1;1;1", "1;1", "1", "1;1;1;1", "1;1;1;1;1;1;1;1;1", "1", "1", "1", "1;1;1;1;…
+$ Start          &lt;chr&gt; "3054233", "3102016", "3205901;3206523;3213439;3213609;3214482;3421702;3670552", "3466587;35134…
+$ End            &lt;chr&gt; "3054733", "3102125", "3207317;3207317;3215632;3216344;3216968;3421901;3671498", "3466687;35135…
+$ Strand         &lt;chr&gt; "+", "+", "-;-;-;-;-;-;-", "+;+", "-", "-;-;-;-", "-;-;-;-;-;-;-;-;-", "+", "-", "-", "-;-;-;-;…
+$ Length         &lt;dbl&gt; 501, 110, 6094, 250, 58, 7508, 3154, 107, 1470, 103, 5668, 7341, 3017, 1468, 4239, 272, 3725, 1…
+$ ERR1755082.bam &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 463, 0, 743, 3192, 1022, 16, 0, 0, 0, 0, 1193, 1, 0, 1, 3959, 36, 0, 0,…
+$ ERR1755083.bam &lt;dbl&gt; 0, 0, 0, 0, 0, 1, 0, 0, 456, 0, 637, 2685, 839, 19, 0, 0, 0, 0, 982, 6, 0, 0, 3125, 27, 0, 0, 1…
+$ ERR1755084.bam &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 1, 0, 447, 0, 678, 2893, 1003, 13, 0, 0, 1, 0, 1078, 2, 0, 0, 3683, 35, 0, 0,…
+$ ERR1755085.bam &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 557, 0, 770, 3488, 952, 24, 0, 1, 0, 0, 1210, 2, 0, 0, 3777, 29, 1, 0, …
+$ ERR1755086.bam &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 480, 0, 637, 3026, 780, 22, 0, 0, 0, 0, 1119, 0, 0, 0, 3145, 25, 0, 0, …
+$ ERR1755087.bam &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 1, 0, 469, 0, 693, 2805, 785, 16, 0, 0, 0, 0, 1078, 0, 0, 0, 3089, 20, 0, 0, …
+$ ERR1755088.bam &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 463, 0, 743, 3192, 1022, 16, 0, 0, 0, 0, 1193, 1, 0, 1, 3959, 36, 0, 0,…
+$ ERR1755089.bam &lt;dbl&gt; 0, 0, 0, 0, 0, 1, 0, 0, 456, 0, 637, 2685, 839, 19, 0, 0, 0, 0, 982, 6, 0, 0, 3125, 27, 0, 0, 1…</code></pre>
+</div>
+</div>
+<ul>
+<li>Extract gene metadata from the tibble <code>featurecounts_table</code> into a new tibble called <code>gene_info</code>. Display a preview of <code>gene_info</code> using <code>glimpse()</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>gene_info <span class="ot">&lt;-</span> featurecounts_table <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column_to_rownames</span>(<span class="st">"Geneid"</span> )<span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="st">"Chr"</span>, <span class="st">"Start"</span>, <span class="st">"End"</span>,<span class="st">"Strand"</span>,<span class="st">"Length"</span> )</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(gene_info )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 39,179
+Columns: 5
+$ Chr    &lt;chr&gt; "1", "1", "1;1;1;1;1;1;1", "1;1", "1", "1;1;1;1", "1;1;1;1;1;1;1;1;1", "1", "1", "1", "1;1;1;1;1;1;1;1;…
+$ Start  &lt;chr&gt; "3054233", "3102016", "3205901;3206523;3213439;3213609;3214482;3421702;3670552", "3466587;3513405", "37…
+$ End    &lt;chr&gt; "3054733", "3102125", "3207317;3207317;3215632;3216344;3216968;3421901;3671498", "3466687;3513553", "37…
+$ Strand &lt;chr&gt; "+", "+", "-;-;-;-;-;-;-", "+;+", "-", "-;-;-;-", "-;-;-;-;-;-;-;-;-", "+", "-", "-", "-;-;-;-;-;-;-;-;…
+$ Length &lt;dbl&gt; 501, 110, 6094, 250, 58, 7508, 3154, 107, 1470, 103, 5668, 7341, 3017, 1468, 4239, 272, 3725, 1588, 197…</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#so this is the gene info we generated-get all the relevant gene info into this dataframe</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(gene_info)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+</div>
+<ul>
+<li>Similarly, extract the read counts per sample from <code>featurecounts_table</code> into a numeric matrix called <code>counts_table</code>. Display the first few rows of <code>counts_table</code> using <code>head()</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>counts_table <span class="ot">&lt;-</span> featurecounts_table <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">column_to_rownames</span>(<span class="st">"Geneid"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>( <span class="fu">ends_with</span>(<span class="st">".bam"</span>) ) </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>( counts_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   ERR1755082.bam ERR1755083.bam ERR1755084.bam ERR1755085.bam ERR1755086.bam ERR1755087.bam
+ENSMUSG00000090025              0              0              0              0              0              0
+ENSMUSG00000064842              0              0              0              0              0              0
+ENSMUSG00000051951              0              0              0              0              0              0
+ENSMUSG00000089699              0              0              0              0              0              0
+ENSMUSG00000088333              0              0              0              0              0              0
+ENSMUSG00000025900              0              1              0              0              0              0
+                   ERR1755088.bam ERR1755089.bam
+ENSMUSG00000090025              0              0
+ENSMUSG00000064842              0              0
+ENSMUSG00000051951              0              0
+ENSMUSG00000089699              0              0
+ENSMUSG00000088333              0              0
+ENSMUSG00000025900              0              1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#like yesterdays--read and assign to matrix</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#assay_counts &lt;- read.csv("data/summarized_experiment/counts.csv", row.names = 1)</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#assay_counts &lt;- as.matrix(assay_counts)</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#NOTE-This needs to be a matrix in this step..countData---so converted it later as as.matrix, #otherwise =storage.mode was list instead of double which means it is double the data as #numbers-integers</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#you need to have the row names constant so keep it the same as in the gene info table above</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#in select, name is part of column, put in quotes</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#you can use exclude-inverse selection</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Display the dimensions of the matrix <code>counts_table</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(counts_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 39179     8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>counts_table<span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(counts_table)<span class="co"># THIS WAS TO BE DONE EARLIER WHILE READING TSV</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#counts_table</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>What does the function <code>storage.mode()</code> tell you about <code>counts_table</code>?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">storage.mode</span>(counts_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "double"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">#tells what is stored inside it, it affects the memory of the counts table</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="exercise-1" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1">Exercise</h2>
+<section id="import-sample-metadata" class="level3">
+<h3 class="anchored" data-anchor-id="import-sample-metadata">Import sample metadata</h3>
+<ul>
+<li>Import sample metadata from the file <code>PRJEB18572_sample_info.tsv</code> into a tibble called <code>sample_info</code> using the tidyverse function <code>read_tsv()</code>. Display the object <code>sample_info</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>sample_info <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">"/project/shared/r/1_r_data_science/9-de/PRJEB18572_sample_info.tsv"</span>, <span class="at">col_names =</span> <span class="cn">TRUE</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 8 Columns: 6
+── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────
+Delimiter: "\t"
+chr (5): sample_id, sample_name, cell_type, genotype, day_collected
+dbl (1): replicate
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>sample_info</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 6
+  sample_id  sample_name        cell_type genotype     replicate day_collected
+  &lt;chr&gt;      &lt;chr&gt;              &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;        
+1 ERR1755082 Egr2_Egr3_KO_CD4_1 CD4       Egr2_Egr3_KO         1 11_10_2015   
+2 ERR1755083 Egr2_Egr3_KO_CD4_2 CD4       Egr2_Egr3_KO         2 11_10_2015   
+3 ERR1755084 Egr2_Egr3_KO_CD4_3 CD4       Egr2_Egr3_KO         3 11_10_2015   
+4 ERR1755085 Egr2_Egr3_KO_CD8_1 CD8       Egr2_Egr3_KO         1 11_10_2015   
+5 ERR1755086 Egr2_Egr3_KO_CD8_2 CD8       Egr2_Egr3_KO         2 11_10_2015   
+6 ERR1755087 Egr2_Egr3_KO_CD8_3 CD8       Egr2_Egr3_KO         3 11_10_2015   
+7 ERR1755088 Egr2_Kin_CD4_1     CD4       Egr2_Kin             1 11_10_2015   
+8 ERR1755089 Egr2_Kin_CD4_2     CD4       Egr2_Kin             2 11_10_2015   </code></pre>
+</div>
+</div>
+<ul>
+<li>What is the type of the column called <code>cell_type</code>?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(sample_info<span class="sc">$</span>cell_type)<span class="co">#not class-shows it as factor</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># str(sample_info)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(sample_info<span class="sc">$</span>cell_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> chr [1:8] "CD4" "CD4" "CD4" "CD8" "CD8" "CD8" "CD4" "CD4"</code></pre>
+</div>
+</div>
+<ul>
+<li>Convert the column <code>cell_type</code> to a factor.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#factor(sample_info$cell_type)##WRONG?</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>sample_info<span class="sc">$</span>cell_type <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(sample_info<span class="sc">$</span>cell_type)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>sample_info<span class="sc">$</span>cell_type</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] CD4 CD4 CD4 CD8 CD8 CD8 CD4 CD4
+Levels: CD4 CD8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">#type of the columns needs to be a factor otherwise it gives an error, so converting to factor</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co">#anything that can be grouped and might be important is better to convert it to a factor for future #use</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>What is the default order of the levels of that factor?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#order(factor(sample_info$cell_type))#this does not seem right</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(sample_info<span class="sc">$</span>cell_type)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "CD4" "CD8"</code></pre>
+</div>
+</div>
+<ul>
+<li>One more time, convert the column <code>cell_type</code> to a factor, this time setting the levels of that factor to be <code>CD8</code> first, then <code>CD4</code>. Demonstrate that it worked.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(sample_info<span class="sc">$</span>cell_type, <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"CD8"</span>, <span class="st">"CD4"</span>), <span class="at">ordered=</span><span class="fu">is.ordered</span>(sample_info<span class="sc">$</span>cell_type))<span class="co">#me</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] CD4 CD4 CD4 CD8 CD8 CD8 CD4 CD4
+Levels: CD8 CD4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>sample_info<span class="sc">$</span>cell_type <span class="ot">&lt;-</span> <span class="fu">relevel</span>(sample_info<span class="sc">$</span>cell_type, <span class="at">ref=</span><span class="st">"CD8"</span>) <span class="co">#devika</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>sample_info<span class="sc">$</span>cell_type</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] CD4 CD4 CD4 CD8 CD8 CD8 CD4 CD4
+Levels: CD8 CD4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(sample_info<span class="sc">$</span>cell_type) <span class="co">#devika</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "CD8" "CD4"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co">#relevel making CD8 first which will now be reference</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>How does the order of the levels impact the differential expression analysis?</strong></p>
+<ul>
+<li>What other columns might we want to include in the experimental design of our differential expression analysis? Convert those to factors too. Display the full tibble <code>sample_info</code> again.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co">#CONVERT EVERY RELEVANT PIECE OF COL INFO INTO FACTOR ESPECIALLY THAT WHICH CAN BE #CATEGORISED/GROUPED?--DID GENOTYPE AND REPLICATE</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>sample_info<span class="sc">$</span>genotype <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(sample_info<span class="sc">$</span>genotype)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>sample_info<span class="sc">$</span>genotype</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Egr2_Egr3_KO Egr2_Egr3_KO Egr2_Egr3_KO Egr2_Egr3_KO Egr2_Egr3_KO Egr2_Egr3_KO Egr2_Kin     Egr2_Kin    
+Levels: Egr2_Egr3_KO Egr2_Kin</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(sample_info<span class="sc">$</span>genotype)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Egr2_Egr3_KO" "Egr2_Kin"    </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>sample_info<span class="sc">$</span>replicate <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(sample_info<span class="sc">$</span>replicate)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>sample_info<span class="sc">$</span>replicate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1 2 3 1 2 3 1 2
+Levels: 1 2 3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(sample_info<span class="sc">$</span>replicate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "1" "2" "3"</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="exercise-2" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2">Exercise</h2>
+<section id="sanity-check-and-preprocess-data" class="level3">
+<h3 class="anchored" data-anchor-id="sanity-check-and-preprocess-data">Sanity check and preprocess data</h3>
+<ul>
+<li>Check whether sample names in the count matrix (column names) and sample meta (column <code>sample_id</code>) match.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co">#check(colnames (featurecounts_table))== sample_id(sample_info)</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(<span class="fu">colnames</span>(counts_table), <span class="fu">rownames</span>(sample_info))<span class="co">#MINE was false because row names were </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co">#numbers-should not use this command, should mention the column you want it to match instead like #below</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(<span class="fu">colnames</span>(counts_table), sample_info<span class="sc">$</span>sample_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">colnames</span>(counts_table)) <span class="sc">==</span> sample_info<span class="sc">$</span>sample_id<span class="co">#DEVIKA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in all(colnames(counts_table)): coercing argument of type 'character' to logical</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA NA NA NA NA NA NA NA</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(counts_table) <span class="sc">==</span> sample_info<span class="sc">$</span>sample_id<span class="co">#DEVIKA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+</div>
+</div>
+<ul>
+<li>If not, display the two sets of sample names. (Hint: you display them individually, or as two columns in a single tibble, for easier side-by-side comparison).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(counts_table)<span class="co">#SEE INDIVIDUALLY</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "ERR1755082.bam" "ERR1755083.bam" "ERR1755084.bam" "ERR1755085.bam" "ERR1755086.bam" "ERR1755087.bam"
+[7] "ERR1755088.bam" "ERR1755089.bam"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>sample_info<span class="sc">$</span>sample_id<span class="co">#SEE INDIVIDUALLY</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "ERR1755082" "ERR1755083" "ERR1755084" "ERR1755085" "ERR1755086" "ERR1755087" "ERR1755088" "ERR1755089"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="fu">colnames</span>(counts_table),</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>sample_info<span class="sc">$</span>sample_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 2
+  `colnames(counts_table)` `sample_info$sample_id`
+  &lt;chr&gt;                    &lt;chr&gt;                  
+1 ERR1755082.bam           ERR1755082             
+2 ERR1755083.bam           ERR1755083             
+3 ERR1755084.bam           ERR1755084             
+4 ERR1755085.bam           ERR1755085             
+5 ERR1755086.bam           ERR1755086             
+6 ERR1755087.bam           ERR1755087             
+7 ERR1755088.bam           ERR1755088             
+8 ERR1755089.bam           ERR1755089             </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rownames(sample_info) not this</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="co">#make tibble and see</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>What makes the two sets of sample names different from each other?</strong></p>
+<ul>
+<li>Remove <code>.bam</code> from the column names of the matrix to match the <code>sample_id</code> column of the sample metadata.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co">#correct-done to show me what it does-- sub(".bam", "", colnames(counts_table))</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(counts_table) <span class="ot">&lt;-</span> <span class="fu">sub</span>(<span class="st">".bam"</span>, <span class="st">""</span>, <span class="fu">colnames</span>(counts_table))</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(counts_table) <span class="sc">==</span> sample_info<span class="sc">$</span>sample_id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co">#colnames(counts_table) &lt;-  colnames(counts_table) %&gt;%  str_replace(".bam", "") </span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="co">#stringreplace, gsub?  str_replace(".bam", "") #replace with nothing</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Check (again) whether sample names in the count matrix (column names) and sample meta (column <code>sample_id</code>) match.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># option 1: get a vector of pairwise comparisons</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="co"># option 2: get a single overall answer whether the two whole vectors are identical</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="exercise-3" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-3">Exercise</h2>
+<section id="construct-a-deseqdataset-object" class="level3">
+<h3 class="anchored" data-anchor-id="construct-a-deseqdataset-object">Construct a DESeqDataSet object</h3>
+<ul>
+<li>Load the package <code>DESeq2</code> and use the function <code>DESeqDataSetFromMatrix()</code> to construct a <code>DESeqDataSet</code> called <code>dds</code> using the count matrix <code>counts_table</code> and the tibble <code>sample_info</code>. Define an experimental design that includes only <code>cell_type</code> for now.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DESeq2)</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromMatrix</span>(counts_table, </span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>                              sample_info,</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">design=</span><span class="sc">~</span>cell_type</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>converting counts to integer mode</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">#note-error message was to convert it to integer mode, since it is required. Did in next steps</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Rewrite the code above, adding a line using the function <code>storage.mode()</code> to avoid the message “converting counts to integer mode”, printed by the function <code>DESeqDataSetFromMatrix()</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">storage.mode</span>(counts_table) <span class="ot">&lt;-</span> <span class="st">"integer"</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromMatrix</span>(counts_table, </span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>                              sample_info,</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">design=</span><span class="sc">~</span>cell_type</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="co">#design= needs a "~" before text </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Display the <code>dds</code> object.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">storage.mode</span>(counts_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "integer"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>dds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class: DESeqDataSet 
+dim: 39179 8 
+metadata(1): version
+assays(1): counts
+rownames(39179): ENSMUSG00000090025 ENSMUSG00000064842 ... ENSMUSG00000096850 ENSMUSG00000095326
+rowData names(0):
+colnames(8): ERR1755082 ERR1755083 ... ERR1755088 ERR1755089
+colData names(6): sample_id sample_name ... replicate day_collected</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="exercise-4" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-4">Exercise</h2>
+<section id="explore-a-deseqdataset-object" class="level3">
+<h3 class="anchored" data-anchor-id="explore-a-deseqdataset-object">Explore a DESeqDataSet object</h3>
+<ul>
+<li>Use the function <code>class()</code> to demonstrate that the object <code>dds</code> is a <code>DESeqDataSet</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "DESeqDataSet"
+attr(,"package")
+[1] "DESeq2"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "S4"</code></pre>
+</div>
+</div>
+<ul>
+<li>Use the function <code>is()</code> to demonstrate that <code>dds</code> is also a <code>SummarizedExperiment</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is</span>(dds, <span class="st">"SummarizedExperiment"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<ul>
+<li>Given that <code>dds</code> is a <code>SummarizedExperiment</code>, what do the following methods tell you about <code>dds</code>?
+<ul>
+<li><code>assayNames()</code></li>
+<li><code>assays()</code></li>
+<li><code>assay()</code></li>
+<li><code>colData()</code></li>
+<li><code>rowData()</code></li>
+<li><code>metadata()</code></li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">assayNames</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "counts"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">assays</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of length 1
+names(1): counts</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">assay</span>(dds, <span class="st">"counts"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   ERR1755082 ERR1755083 ERR1755084 ERR1755085 ERR1755086 ERR1755087 ERR1755088 ERR1755089
+ENSMUSG00000090025          0          0          0          0          0          0          0          0
+ENSMUSG00000064842          0          0          0          0          0          0          0          0
+ENSMUSG00000051951          0          0          0          0          0          0          0          0
+ENSMUSG00000089699          0          0          0          0          0          0          0          0
+ENSMUSG00000088333          0          0          0          0          0          0          0          0
+ENSMUSG00000025900          0          1          0          0          0          0          0          1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DataFrame with 8 rows and 6 columns
+             sample_id        sample_name cell_type     genotype replicate day_collected
+           &lt;character&gt;        &lt;character&gt;  &lt;factor&gt;     &lt;factor&gt;  &lt;factor&gt;   &lt;character&gt;
+ERR1755082  ERR1755082 Egr2_Egr3_KO_CD4_1       CD4 Egr2_Egr3_KO         1    11_10_2015
+ERR1755083  ERR1755083 Egr2_Egr3_KO_CD4_2       CD4 Egr2_Egr3_KO         2    11_10_2015
+ERR1755084  ERR1755084 Egr2_Egr3_KO_CD4_3       CD4 Egr2_Egr3_KO         3    11_10_2015
+ERR1755085  ERR1755085 Egr2_Egr3_KO_CD8_1       CD8 Egr2_Egr3_KO         1    11_10_2015
+ERR1755086  ERR1755086 Egr2_Egr3_KO_CD8_2       CD8 Egr2_Egr3_KO         2    11_10_2015
+ERR1755087  ERR1755087 Egr2_Egr3_KO_CD8_3       CD8 Egr2_Egr3_KO         3    11_10_2015
+ERR1755088  ERR1755088     Egr2_Kin_CD4_1       CD4 Egr2_Kin             1    11_10_2015
+ERR1755089  ERR1755089     Egr2_Kin_CD4_2       CD4 Egr2_Kin             2    11_10_2015</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rowData</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DataFrame with 39179 rows and 0 columns</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">metadata</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$version
+[1] '1.40.2'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 39179     8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co">#meta data command tells the version of deseq versio it was used to create it</span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="co">#can apply functions similar to summarized expt for deseq data too</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Furthermore, as a <code>DESeqDataSet</code>, what do the following methods tell you about <code>dds</code>?
+<ul>
+<li><code>counts()</code></li>
+<li><code>design()</code></li>
+<li><code>sizeFactors()</code></li>
+<li><code>dispersions()</code></li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">counts</span>(dds))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   ERR1755082 ERR1755083 ERR1755084 ERR1755085 ERR1755086 ERR1755087 ERR1755088 ERR1755089
+ENSMUSG00000090025          0          0          0          0          0          0          0          0
+ENSMUSG00000064842          0          0          0          0          0          0          0          0
+ENSMUSG00000051951          0          0          0          0          0          0          0          0
+ENSMUSG00000089699          0          0          0          0          0          0          0          0
+ENSMUSG00000088333          0          0          0          0          0          0          0          0
+ENSMUSG00000025900          0          1          0          0          0          0          0          1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>~cell_type</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sizeFactors</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dispersions</span>(dds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+</div>
+<ul>
+<li>As a <code>SummarizedExperiment</code>, the <code>dds</code> object can also be indexed using <code>[</code>. Extract the rows 1 to 5 and columns 1 to 4. Display the result without assigning it to any object.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>dds[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class: DESeqDataSet 
+dim: 5 4 
+metadata(1): version
+assays(1): counts
+rownames(5): ENSMUSG00000090025 ENSMUSG00000064842 ENSMUSG00000051951 ENSMUSG00000089699 ENSMUSG00000088333
+rowData names(0):
+colnames(4): ERR1755082 ERR1755083 ERR1755084 ERR1755085
+colData names(6): sample_id sample_name ... replicate day_collected</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co">#dds</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="exercise-5" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-5">Exercise</h2>
+<section id="filter-out-lowly-genes-expressed" class="level3">
+<h3 class="anchored" data-anchor-id="filter-out-lowly-genes-expressed">Filter out lowly genes expressed</h3>
+<ul>
+<li>Use the functions <code>counts()</code> and <code>rowSums()</code> to count the number of samples in which each gene is expressed (i.e., strictly more than zero read counts). Use that information to extract genes expressed in at least 4 samples into a new object called <code>dds_filtered</code>. Display the object <code>dds_filtered</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb106"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb106-1"><a href="#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="co">#counts(dds)&gt;0---apply rowSums to check this conditions, </span></span>
+<span id="cb106-2"><a href="#cb106-2" aria-hidden="true" tabindex="-1"></a><span class="co">#dds[rowSums(counts(dds)&gt;0) &gt;=4,]#condition applied only to rows thats why , col left empty</span></span>
+<span id="cb106-3"><a href="#cb106-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-4"><a href="#cb106-4" aria-hidden="true" tabindex="-1"></a>dds_filtered <span class="ot">&lt;-</span> dds[<span class="fu">rowSums</span>(<span class="fu">counts</span>(dds)<span class="sc">&gt;</span><span class="dv">0</span>) <span class="sc">&gt;=</span><span class="dv">4</span>,]</span>
+<span id="cb106-5"><a href="#cb106-5" aria-hidden="true" tabindex="-1"></a>dds_filtered</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class: DESeqDataSet 
+dim: 19053 8 
+metadata(1): version
+assays(1): counts
+rownames(19053): ENSMUSG00000098104 ENSMUSG00000033845 ... ENSMUSG00000095134 ENSMUSG00000096768
+rowData names(0):
+colnames(8): ERR1755082 ERR1755083 ... ERR1755088 ERR1755089
+colData names(6): sample_id sample_name ... replicate day_collected</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb108"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a href="#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="co">#see in 4 genes as a single condition with &gt;0 expsn</span></span>
+<span id="cb108-2"><a href="#cb108-2" aria-hidden="true" tabindex="-1"></a><span class="co">#counts() here is the counts matrix?</span></span>
+<span id="cb108-3"><a href="#cb108-3" aria-hidden="true" tabindex="-1"></a><span class="co">#genes here are 19053, dds was 39179</span></span>
+<span id="cb108-4"><a href="#cb108-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb108-5"><a href="#cb108-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(dds)<span class="sc">-</span><span class="fu">dim</span>(dds_filtered)<span class="co">#20126 left</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20126     0</code></pre>
+</div>
+</div>
+<p><strong>How many genes remain after filtering?</strong></p>
+</section>
+<section id="bonus-points" class="level3">
+<h3 class="anchored" data-anchor-id="bonus-points">Bonus point(s)</h3>
+<p>Explore different cut-offs and filtering strategies, e.g.</p>
+<ul>
+<li>Change the minimum read count cut-off from 0 to higher values.</li>
+<li>Change the number of samples in which genes should be detected above the read count cut-off.</li>
+<li>Keep only genes detected above the read count cut-off in all the samples of either cell type.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a>keep <span class="ot">&lt;-</span> <span class="fu">counts</span>(dds) <span class="sc">%&gt;%</span></span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rownames_to_column</span>(<span class="st">"gene_id"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_longer</span>(<span class="sc">-</span>gene_id) <span class="sc">%&gt;%</span> </span>
+<span id="cb110-6"><a href="#cb110-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(</span>
+<span id="cb110-7"><a href="#cb110-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">colData</span>(dds) <span class="sc">%&gt;%</span> <span class="fu">as_tibble</span>(),</span>
+<span id="cb110-8"><a href="#cb110-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"name"</span> <span class="ot">=</span> <span class="st">"sample_id"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb110-9"><a href="#cb110-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(gene_id, cell_type) <span class="sc">%&gt;%</span> </span>
+<span id="cb110-10"><a href="#cb110-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">all_samples =</span> <span class="fu">all</span>(value <span class="sc">&gt;</span> <span class="dv">0</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb110-11"><a href="#cb110-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">all_samples_any_celltype =</span> <span class="fu">any</span>(all_samples)) <span class="sc">%&gt;%</span> </span>
+<span id="cb110-12"><a href="#cb110-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(all_samples_any_celltype) <span class="sc">%&gt;%</span> </span>
+<span id="cb110-13"><a href="#cb110-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pull</span>(gene_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'gene_id'. You can override using the `.groups` argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a>dds[keep, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class: DESeqDataSet 
+dim: 18050 8 
+metadata(1): version
+assays(1): counts
+rownames(18050): ENSMUSG00000000001 ENSMUSG00000000028 ... ENSMUSG00000099297 ENSMUSG00000099314
+rowData names(0):
+colnames(8): ERR1755082 ERR1755083 ... ERR1755088 ERR1755089
+colData names(6): sample_id sample_name ... replicate day_collected</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co">#OMG-I have forgotten everything, got from Kevin's key!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="exercise-6" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-6">Exercise</h2>
+<section id="preprocessing-for-exploratory-analysis-and-quality-control" class="level3">
+<h3 class="anchored" data-anchor-id="preprocessing-for-exploratory-analysis-and-quality-control">Preprocessing for exploratory analysis and quality control</h3>
+<ul>
+<li>Use the function <code>rlog()</code> to transform the counts data using the ‘regularised log’ transformation. Leave the argument <code>blind=</code> set to its default value <code>TRUE</code>. Assign the result to a new object named <code>dds_rlog</code>. Display the object <code>dds_rlog</code>. What is the class of the object?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>dds_rlog <span class="ot">&lt;-</span> <span class="fu">rlog</span>( dds_filtered, <span class="at">blind=</span><span class="cn">TRUE</span>)</span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>dds_rlog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class: DESeqTransform 
+dim: 19053 8 
+metadata(1): version
+assays(1): ''
+rownames(19053): ENSMUSG00000098104 ENSMUSG00000033845 ... ENSMUSG00000095134 ENSMUSG00000096768
+rowData names(7): baseMean baseVar ... dispFit rlogIntercept
+colnames(8): ERR1755082 ERR1755083 ... ERR1755088 ERR1755089
+colData names(7): sample_id sample_name ... day_collected sizeFactor</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dds_rlog)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "DESeqTransform"
+attr(,"package")
+[1] "DESeq2"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="co">#note- the bonus point making object keep had changed the dds which changed this value. #When I commented that command before this, the values returned to the expected 19053.  </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="bonus-points-1" class="level3">
+<h3 class="anchored" data-anchor-id="bonus-points-1">Bonus point(s)</h3>
+<ul>
+<li>Use the function <code>vst()</code> to transform the counts data using the ‘variance stabilizing’ transformation. Leave the argument <code>blind=</code> set to its default value <code>TRUE</code>. Assign the result to a new object named <code>dds_vst</code>. Display the object <code>dds_vst</code>. What is the class of the object?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb120"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb120-1"><a href="#cb120-1" aria-hidden="true" tabindex="-1"></a>dds_vst <span class="ot">&lt;-</span> <span class="fu">vst</span>(dds_filtered, <span class="at">blind=</span><span class="cn">TRUE</span> )</span>
+<span id="cb120-2"><a href="#cb120-2" aria-hidden="true" tabindex="-1"></a>dds_vst</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class: DESeqTransform 
+dim: 19053 8 
+metadata(1): version
+assays(1): ''
+rownames(19053): ENSMUSG00000098104 ENSMUSG00000033845 ... ENSMUSG00000095134 ENSMUSG00000096768
+rowData names(4): baseMean baseVar allZero dispFit
+colnames(8): ERR1755082 ERR1755083 ... ERR1755088 ERR1755089
+colData names(7): sample_id sample_name ... day_collected sizeFactor</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dds_vst)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "DESeqTransform"
+attr(,"package")
+[1] "DESeq2"</code></pre>
+</div>
+</div>
+<p><strong>Can you spot differences between the rlog() and vst() outputs?</strong></p>
+<blockquote class="blockquote">
+<p>Answer: Some rowData() names are different. allZero dispFit in vst, dispFit rlogIntercept in rlog</p>
+</blockquote>
+</section>
+</section>
+<section id="exercise-7" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-7">Exercise</h2>
+<section id="exploratory-analysis-and-quality-control" class="level3">
+<h3 class="anchored" data-anchor-id="exploratory-analysis-and-quality-control">Exploratory analysis and quality control</h3>
+<p>Using either of the objects <code>dds_rlog</code> or <code>dds_vst</code> produced earlier.</p>
+<ul>
+<li>Use the function <code>plotPCA()</code>. Set the argument <code>intgroup</code> to <code>"cell_type"</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plotPCA</span>(dds_rlog, <span class="at">intgroup=</span><span class="st">"cell_type"</span>, <span class="at">ntop=</span><span class="dv">500</span> ) <span class="sc">+</span></span>
+<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_fixed</span>(<span class="at">ratio =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Coordinate system already present. Adding new coordinate system, which will replace the existing one.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Amena-Day-8-diff-expn-template_files/figure-html/unnamed-chunk-29-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="co">#plotPCA(dds_vst, intgroup="cell_type", ntop=500 ) +</span></span>
+<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a> <span class="co">#   coord_fixed(ratio = 5)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>How many samples do you count?</strong></p>
+</section>
+<section id="bonus-points-2" class="level3">
+<h3 class="anchored" data-anchor-id="bonus-points-2">Bonus point(s)</h3>
+<ul>
+<li>Use the functions <code>assay()</code> and <code>cor()</code> to compute a correlation matrix between samples using the “spearman” method. Load the <code>pheatmap</code> package and use the function <code>pheatmap()</code> to plot a heat map of correlations between samples.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb127"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb127-1"><a href="#cb127-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pheatmap)</span>
+<span id="cb127-2"><a href="#cb127-2" aria-hidden="true" tabindex="-1"></a>dds_cor <span class="ot">&lt;-</span> <span class="fu">cor</span>(<span class="fu">assay</span>(dds_rlog), <span class="at">method=</span><span class="st">"spearman"</span>)</span>
+<span id="cb127-3"><a href="#cb127-3" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(dds_cor, <span class="at">breaks=</span><span class="fu">seq</span>(<span class="at">from =</span> <span class="fl">0.99</span>, <span class="at">to =</span> <span class="dv">1</span>, <span class="at">length.out=</span><span class="dv">100</span>) )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Amena-Day-8-diff-expn-template_files/figure-html/unnamed-chunk-30-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb128"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a>dds_cor <span class="ot">&lt;-</span> <span class="fu">cor</span>(<span class="fu">assay</span>(dds_rlog), <span class="at">method=</span><span class="st">"spearman"</span>)</span>
+<span id="cb128-2"><a href="#cb128-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(dds_cor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Amena-Day-8-diff-expn-template_files/figure-html/unnamed-chunk-30-2.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb129"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb129-1"><a href="#cb129-1" aria-hidden="true" tabindex="-1"></a>dds_cor <span class="ot">&lt;-</span> <span class="fu">cor</span>(<span class="fu">assay</span>(dds_vst), <span class="at">method=</span><span class="st">"spearman"</span>)</span>
+<span id="cb129-2"><a href="#cb129-2" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(dds_cor )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Amena-Day-8-diff-expn-template_files/figure-html/unnamed-chunk-30-3.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb130"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="co">#note-theirs was different colour with pearson method/vst/rlog/unfiltered</span></span>
+<span id="cb130-2"><a href="#cb130-2" aria-hidden="true" tabindex="-1"></a><span class="co">#difference between vst- rlog filtered, and unfiltered </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>What can you tell from the scale of correlation values?</strong></p>
+<ul>
+<li>Use the functions <code>assay()</code>, <code>t()</code> and <code>dist()</code> to compute the Euclidean distance matrix between samples. Use the function <code>pheatmap()</code> to plot a heat map of distances between samples.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb131"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb131-1"><a href="#cb131-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
+<span id="cb131-2"><a href="#cb131-2" aria-hidden="true" tabindex="-1"></a>dds_dist <span class="ot">&lt;-</span> <span class="fu">dist</span>(<span class="fu">t</span>(<span class="fu">assay</span>(dds_rlog)))</span>
+<span id="cb131-3"><a href="#cb131-3" aria-hidden="true" tabindex="-1"></a><span class="co">#class(dds_dist) -did to see what class it was, then commented it out</span></span>
+<span id="cb131-4"><a href="#cb131-4" aria-hidden="true" tabindex="-1"></a>blue_colors <span class="ot">&lt;-</span> <span class="fu">colorRampPalette</span>( <span class="fu">rev</span>(<span class="fu">brewer.pal</span>(<span class="dv">9</span>, <span class="st">"Blues"</span>)) )(<span class="dv">255</span>)</span>
+<span id="cb131-5"><a href="#cb131-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pheatmap</span>(<span class="fu">as.matrix</span>(dds_dist),</span>
+<span id="cb131-6"><a href="#cb131-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> blue_colors</span>
+<span id="cb131-7"><a href="#cb131-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Amena-Day-8-diff-expn-template_files/figure-html/unnamed-chunk-31-1.svg" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb132"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="co">#note-dd_dist is class distance, make it a matrix using as.matrix in pheatmap because it #requires mat= ie matrix</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Confirm that the suspicious samples are duplicate of each other.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb133"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb133-1"><a href="#cb133-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first pair of duplicates</span></span>
+<span id="cb133-2"><a href="#cb133-2" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(</span>
+<span id="cb133-3"><a href="#cb133-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">counts</span>(dds_filtered)[, <span class="st">"ERR1755082"</span>],</span>
+<span id="cb133-4"><a href="#cb133-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">counts</span>(dds_filtered)[, <span class="st">"ERR1755088"</span> ]</span>
+<span id="cb133-5"><a href="#cb133-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb135"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb135-1"><a href="#cb135-1" aria-hidden="true" tabindex="-1"></a><span class="co"># second pair of duplicates</span></span>
+<span id="cb135-2"><a href="#cb135-2" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(</span>
+<span id="cb135-3"><a href="#cb135-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">counts</span>(dds_filtered)[, <span class="st">"ERR1755083"</span>],</span>
+<span id="cb135-4"><a href="#cb135-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">counts</span>(dds_filtered)[, <span class="st">"ERR1755089"</span>]</span>
+<span id="cb135-5"><a href="#cb135-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb137"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb137-1"><a href="#cb137-1" aria-hidden="true" tabindex="-1"></a><span class="co">#checking if the 2 duplicates identified are same</span></span>
+<span id="cb137-2"><a href="#cb137-2" aria-hidden="true" tabindex="-1"></a><span class="fu">identical</span>(</span>
+<span id="cb137-3"><a href="#cb137-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">counts</span>(dds_filtered)[,<span class="st">"ERR1755088"</span>],</span>
+<span id="cb137-4"><a href="#cb137-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">counts</span>(dds_filtered)[,<span class="st">"ERR1755089"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb139"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb139-1"><a href="#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="co">#colData(dds_filtered)</span></span>
+<span id="cb139-2"><a href="#cb139-2" aria-hidden="true" tabindex="-1"></a><span class="co">#so ERR1755082= ERR1755088, ERR1755083= ERR1755089, and ERR1755088 is not ERR1755088</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Index the <code>dds_filtered</code> object to extract the unique samples into a new object called <code>dds_filtered_unique</code>. Display the sample metadata of the new object (compare with objects prior to indexing).</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(dds_filtered)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "ERR1755082" "ERR1755083" "ERR1755084" "ERR1755085" "ERR1755086" "ERR1755087" "ERR1755088" "ERR1755089"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mcols</span>(dds_filtered)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DataFrame with 19053 rows and 0 columns</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a>keep <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">colnames</span>(dds_filtered), <span class="fu">c</span>(<span class="st">"ERR1755088"</span>, <span class="st">"ERR1755089"</span>))</span>
+<span id="cb144-2"><a href="#cb144-2" aria-hidden="true" tabindex="-1"></a>dds_filtered_unique <span class="ot">&lt;-</span> dds_filtered[, keep]</span>
+<span id="cb144-3"><a href="#cb144-3" aria-hidden="true" tabindex="-1"></a>dds_filtered_unique</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class: DESeqDataSet 
+dim: 19053 6 
+metadata(1): version
+assays(1): counts
+rownames(19053): ENSMUSG00000098104 ENSMUSG00000033845 ... ENSMUSG00000095134 ENSMUSG00000096768
+rowData names(0):
+colnames(6): ERR1755082 ERR1755083 ... ERR1755086 ERR1755087
+colData names(6): sample_id sample_name ... replicate day_collected</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(dds_filtered_unique)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "ERR1755082" "ERR1755083" "ERR1755084" "ERR1755085" "ERR1755086" "ERR1755087"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mcols</span>(dds_filtered_unique)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DataFrame with 19053 rows and 0 columns</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="co">#setdiff removed "ERR1755088" "ERR1755089"</span></span>
+<span id="cb150-2"><a href="#cb150-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb150-3"><a href="#cb150-3" aria-hidden="true" tabindex="-1"></a><span class="co">#setdiff s4 generic function</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="exercise-8" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-8">Exercise</h2>
+<section id="perform-differential-expression-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="perform-differential-expression-analysis">Perform differential expression analysis</h3>
+<ul>
+<li><p>Display the design formula stored in the object <code>dds_filtered_unique</code> and check it against the sample metadata stored in the same object to confirm that it is still valid with respect to the differential expression analysis that we wish to perform.</p>
+<p>WHAT DOES THIS MEAN?</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb151"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb151-1"><a href="#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="fu">design</span> (dds_filtered_unique)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>~cell_type</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb153"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb153-1"><a href="#cb153-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds_filtered_unique)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DataFrame with 6 rows and 6 columns
+             sample_id        sample_name cell_type     genotype replicate day_collected
+           &lt;character&gt;        &lt;character&gt;  &lt;factor&gt;     &lt;factor&gt;  &lt;factor&gt;   &lt;character&gt;
+ERR1755082  ERR1755082 Egr2_Egr3_KO_CD4_1       CD4 Egr2_Egr3_KO         1    11_10_2015
+ERR1755083  ERR1755083 Egr2_Egr3_KO_CD4_2       CD4 Egr2_Egr3_KO         2    11_10_2015
+ERR1755084  ERR1755084 Egr2_Egr3_KO_CD4_3       CD4 Egr2_Egr3_KO         3    11_10_2015
+ERR1755085  ERR1755085 Egr2_Egr3_KO_CD8_1       CD8 Egr2_Egr3_KO         1    11_10_2015
+ERR1755086  ERR1755086 Egr2_Egr3_KO_CD8_2       CD8 Egr2_Egr3_KO         2    11_10_2015
+ERR1755087  ERR1755087 Egr2_Egr3_KO_CD8_3       CD8 Egr2_Egr3_KO         3    11_10_2015</code></pre>
+</div>
+</div>
+<ul>
+<li>Use the function <code>DESeq()</code> to perform the differential expression analysis on the object <code>dds_filtered_unique</code>. Re-assign the output to the same name. Display the object.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb155"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb155-1"><a href="#cb155-1" aria-hidden="true" tabindex="-1"></a>dds_filtered_unique <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds_filtered_unique) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>estimating size factors</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>estimating dispersions</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>gene-wise dispersion estimates</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>mean-dispersion relationship</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>final dispersion estimates</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>fitting model and testing</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb162"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb162-1"><a href="#cb162-1" aria-hidden="true" tabindex="-1"></a>dds_filtered_unique</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class: DESeqDataSet 
+dim: 19053 6 
+metadata(1): version
+assays(4): counts mu H cooks
+rownames(19053): ENSMUSG00000098104 ENSMUSG00000033845 ... ENSMUSG00000095134 ENSMUSG00000096768
+rowData names(22): baseMean baseVar ... deviance maxCooks
+colnames(6): ERR1755082 ERR1755083 ... ERR1755086 ERR1755087
+colData names(7): sample_id sample_name ... day_collected sizeFactor</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb164"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb164-1"><a href="#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colData</span>(dds_filtered_unique)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DataFrame with 6 rows and 7 columns
+             sample_id        sample_name cell_type     genotype replicate day_collected sizeFactor
+           &lt;character&gt;        &lt;character&gt;  &lt;factor&gt;     &lt;factor&gt;  &lt;factor&gt;   &lt;character&gt;  &lt;numeric&gt;
+ERR1755082  ERR1755082 Egr2_Egr3_KO_CD4_1       CD4 Egr2_Egr3_KO         1    11_10_2015   1.090744
+ERR1755083  ERR1755083 Egr2_Egr3_KO_CD4_2       CD4 Egr2_Egr3_KO         2    11_10_2015   1.010983
+ERR1755084  ERR1755084 Egr2_Egr3_KO_CD4_3       CD4 Egr2_Egr3_KO         3    11_10_2015   1.055137
+ERR1755085  ERR1755085 Egr2_Egr3_KO_CD8_1       CD8 Egr2_Egr3_KO         1    11_10_2015   1.045618
+ERR1755086  ERR1755086 Egr2_Egr3_KO_CD8_2       CD8 Egr2_Egr3_KO         2    11_10_2015   0.898852
+ERR1755087  ERR1755087 Egr2_Egr3_KO_CD8_3       CD8 Egr2_Egr3_KO         3    11_10_2015   0.938514</code></pre>
+</div>
+</div>
+<p><strong>What differences can you see with this object printed earlier in the notebook?</strong> ..i think there is an additional column sizeFactor now</p>
+<ul>
+<li>Use the function <code>results()</code> to extract the differential expression results from the object <code>dds_filtered_unique</code>. Assign the result to an object called <code>dds_results</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb166"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb166-1"><a href="#cb166-1" aria-hidden="true" tabindex="-1"></a>dds_results <span class="ot">&lt;-</span> <span class="fu">results</span>(dds_filtered_unique )</span>
+<span id="cb166-2"><a href="#cb166-2" aria-hidden="true" tabindex="-1"></a>dds_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>log2 fold change (MLE): cell type CD4 vs CD8 
+Wald test p-value: cell type CD4 vs CD8 
+DataFrame with 19053 rows and 6 columns
+                     baseMean log2FoldChange     lfcSE      stat      pvalue        padj
+                    &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;
+ENSMUSG00000098104   477.6014     -0.2704983 0.0923097  -2.93034 0.003385963  0.00905160
+ENSMUSG00000033845   689.5544     -0.1602443 0.0797812  -2.00855 0.044585017  0.08984602
+ENSMUSG00000025903  3002.5346     -0.2192346 0.0607894  -3.60646 0.000310406  0.00101174
+ENSMUSG00000033813   888.6861      0.0555428 0.0782061   0.71021 0.477573884  0.61955811
+ENSMUSG00000062588    18.3767     -0.4965480 0.4336156  -1.14513 0.252153644  0.38322826
+...                       ...            ...       ...       ...         ...         ...
+ENSMUSG00000069045 5963.91123      0.7903921 0.0688118 11.486279 1.54630e-30 2.77175e-29
+ENSMUSG00000075359   14.33147     -0.0726754 0.4881392 -0.148883 8.81646e-01 9.29131e-01
+ENSMUSG00000096438   53.66305     -0.0898236 0.2712074 -0.331199 7.40494e-01 8.33678e-01
+ENSMUSG00000095134    3.92863      2.6601654 1.1908457  2.233846 2.54932e-02 5.53917e-02
+ENSMUSG00000096768  218.49163     -0.1311743 0.8138127 -0.161185 8.71948e-01 9.22921e-01</code></pre>
+</div>
+</div>
+<p><strong>How do you know that extracted the results for the desired contrast?</strong></p>
+<blockquote class="blockquote">
+<p>Answer: “Wald test p-value: cell type CD4 vs CD8” Better yet, use the additional arguments of the function ‘results()’ to explicitly fetch the desired contrast results.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb168"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb168-1"><a href="#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="fu">results</span>(dds_filtered_unique, <span class="at">contrast =</span> <span class="fu">c</span>(<span class="st">"cell_type"</span>, <span class="st">"CD4"</span>, <span class="st">"CD8"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>log2 fold change (MLE): cell_type CD4 vs CD8 
+Wald test p-value: cell type CD4 vs CD8 
+DataFrame with 19053 rows and 6 columns
+                     baseMean log2FoldChange     lfcSE      stat      pvalue        padj
+                    &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;   &lt;numeric&gt;   &lt;numeric&gt;
+ENSMUSG00000098104   477.6014     -0.2704983 0.0923097  -2.93034 0.003385963  0.00905160
+ENSMUSG00000033845   689.5544     -0.1602443 0.0797812  -2.00855 0.044585017  0.08984602
+ENSMUSG00000025903  3002.5346     -0.2192346 0.0607894  -3.60646 0.000310406  0.00101174
+ENSMUSG00000033813   888.6861      0.0555428 0.0782061   0.71021 0.477573884  0.61955811
+ENSMUSG00000062588    18.3767     -0.4965480 0.4336156  -1.14513 0.252153644  0.38322826
+...                       ...            ...       ...       ...         ...         ...
+ENSMUSG00000069045 5963.91123      0.7903921 0.0688118 11.486279 1.54630e-30 2.77175e-29
+ENSMUSG00000075359   14.33147     -0.0726754 0.4881392 -0.148883 8.81646e-01 9.29131e-01
+ENSMUSG00000096438   53.66305     -0.0898236 0.2712074 -0.331199 7.40494e-01 8.33678e-01
+ENSMUSG00000095134    3.92863      2.6601654 1.1908457  2.233846 2.54932e-02 5.53917e-02
+ENSMUSG00000096768  218.49163     -0.1311743 0.8138127 -0.161185 8.71948e-01 9.22921e-01</code></pre>
+</div>
+</div>
+<ul>
+<li>What does the function <code>summary()</code> tell you about the object <code>dds_results</code>?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb170"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb170-1"><a href="#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dds_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+out of 19053 with nonzero total read count
+adjusted p-value &lt; 0.1
+LFC &gt; 0 (up)       : 4598, 24%
+LFC &lt; 0 (down)     : 4442, 23%
+outliers [1]       : 1, 0.0052%
+low counts [2]     : 1109, 5.8%
+(mean count &lt; 1)
+[1] see 'cooksCutoff' argument of ?results
+[2] see 'independentFiltering' argument of ?results</code></pre>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>Answer: - Number and fraction of significantly up-regulated genes. - Number and fraction of significantly down-regulated genes. - Number and fraction of outliers (?) - Number and fraction of lowly expressed genes excluded by independent filtering.</p>
+</blockquote>
+<ul>
+<li>Export the table of differential expression results to a CSV file.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb172"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb172-1"><a href="#cb172-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> dds_results <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> <span class="fu">rownames_to_column</span>(<span class="st">"gene_id"</span>)</span>
+<span id="cb172-2"><a href="#cb172-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb172-3"><a href="#cb172-3" aria-hidden="true" tabindex="-1"></a><span class="co">#need to assign the column names #for the gene #id rows because it has none</span></span>
+<span id="cb172-4"><a href="#cb172-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb172-5"><a href="#cb172-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(x , <span class="st">"dds_results.csv"</span>, <span class="at">col_names=</span><span class="cn">TRUE</span>)</span>
+<span id="cb172-6"><a href="#cb172-6" aria-hidden="true" tabindex="-1"></a><span class="co">#dds_check_results&lt;- read_csv("dds_results.csv")</span></span>
+<span id="cb172-7"><a href="#cb172-7" aria-hidden="true" tabindex="-1"></a><span class="co">#dds_check_results</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

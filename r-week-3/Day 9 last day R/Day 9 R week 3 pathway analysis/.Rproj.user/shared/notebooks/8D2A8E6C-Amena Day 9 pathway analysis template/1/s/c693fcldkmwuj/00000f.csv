@@ -1,0 +1,9 @@
+"0",""
+"0",""
+"0","set.seed(190)"
+"0","fgseaRes <- fgsea(pathways=hallmark_list, "
+"0","                  stats=ranks, "
+"0","                  maxSize=500)"
+"2","Warning: There are ties in the preranked stats (0.65% of the list).
+The order of those tied genes will be arbitrary, which may produce unexpected results."
+"0","head(fgseaRes)"

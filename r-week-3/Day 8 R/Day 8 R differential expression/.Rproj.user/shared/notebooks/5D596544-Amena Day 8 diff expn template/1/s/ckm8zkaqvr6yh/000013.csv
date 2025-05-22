@@ -1,0 +1,2 @@
+"0","#plotPCA(dds_vst, intgroup=""cell_type"", ntop=500 ) +"
+"0"," #   coord_fixed(ratio = 5)"

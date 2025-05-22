@@ -1,0 +1,7 @@
+"0","storage.mode(counts_table) <- ""integer"""
+"0","dds <- DESeqDataSetFromMatrix(counts_table, "
+"0","                              sample_info,"
+"0","                               design=~cell_type"
+"0","  "
+"0",""
+"0",")"

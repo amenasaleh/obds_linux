@@ -1,0 +1,337 @@
+"0","#| include: true"
+"0","#| echo: true"
+"0","#| eval: false"
+"0","install.packages(""BiocManager"")"
+"1","Error in "
+"1",""
+"1","install.packages"
+"1",""
+"1"," : "
+"1",""
+"1","Updating loaded packages"
+"1",""
+"1","
+"
+"0","BiocManager::install(c(""Biostrings"", ""S4Vectors""))"
+"2","'getOption(""repos"")' replaces Bioconductor standard repositories, see 'help(""repositories"",
+package = ""BiocManager"")' for details.
+Replacement repositories:
+    CRAN: https://www.stats.bris.ac.uk/R/
+"
+"2","Bioconductor version 3.17 (BiocManager 1.30.22), R 4.3.0 (2023-04-21)
+"
+"2","Warning: package(s) not installed when version(s) same as or greater than current; use `force = TRUE` to
+  re-install: 'Biostrings'"
+"2","Installing package(s) 'S4Vectors'
+"
+"2","trying URL 'https://bioconductor.org/packages/3.17/bioc/src/contrib/S4Vectors_0.38.2.tar.gz'
+"
+"2","Content type 'application/gzip'"
+"2"," length 836628 bytes (817 KB)
+"
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","
+"
+"2","downloaded 817 KB
+
+"
+"2","* installing *source* package ‘S4Vectors’ ...
+"
+"2","** using staged installation
+"
+"2","** libs
+"
+"2","using C compiler: ‘gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0’
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c AEbufs.c -o AEbufs.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c DataFrame_class.c -o DataFrame_class.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c Hits_class.c -o Hits_class.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c LLint_class.c -o LLint_class.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c List_class.c -o List_class.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c R_init_S4Vectors.c -o R_init_S4Vectors.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c Rle_class.c -o Rle_class.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c Rle_utils.c -o Rle_utils.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c SEXP_utils.c -o SEXP_utils.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c SimpleList_class.c -o SimpleList_class.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c anyMissing.c -o anyMissing.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c character_utils.c -o character_utils.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c eval_utils.c -o eval_utils.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c hash_utils.c -o hash_utils.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c integer_utils.c -o integer_utils.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c logical_utils.c -o logical_utils.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c map_ranges_to_runs.c -o map_ranges_to_runs.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c raw_utils.c -o raw_utils.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c safe_arithm.c -o safe_arithm.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c sort_utils.c -o sort_utils.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c subsetting_utils.c -o subsetting_utils.o
+"
+"1","gcc -I""/package/R-base/4.3.0/lib/R/include"" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2  -c vector_utils.c -o vector_utils.o
+"
+"1","gcc -shared -L/package/R-base/4.3.0/lib/R/lib -L/usr/local/lib -o S4Vectors.so AEbufs.o DataFrame_class.o Hits_class.o LLint_class.o List_class.o R_init_S4Vectors.o Rle_class.o Rle_utils.o SEXP_utils.o SimpleList_class.o anyMissing.o character_utils.o eval_utils.o hash_utils.o integer_utils.o logical_utils.o map_ranges_to_runs.o raw_utils.o safe_arithm.o sort_utils.o subsetting_utils.o vector_utils.o -L/package/R-base/4.3.0/lib/R/lib -lR
+"
+"2","installing to /home/imm/ndcn1484/R/x86_64-pc-linux-gnu-library/4.3/00LOCK-S4Vectors/00new/S4Vectors/libs
+"
+"2","** R
+"
+"2","** inst
+"
+"2","** byte-compile and prepare package for lazy loading
+"
+"1","in method for ‘normalizeSingleBracketReplacementValue’ with signature ‘""List""’: no definition for class “List”
+Creating a new generic function for ‘unname’ in package ‘S4Vectors’
+Creating a new generic function for ‘expand.grid’ in package ‘S4Vectors’
+Creating a new generic function for ‘findMatches’ in package ‘S4Vectors’
+Creating a generic function for ‘setequal’ from package ‘base’ in package ‘S4Vectors’
+in method for ‘coerce’ with signature ‘""Hits"",""DFrame""’: no definition for class “DFrame”
+Creating a generic function for ‘as.factor’ from package ‘base’ in package ‘S4Vectors’
+Creating a generic function for ‘tabulate’ from package ‘base’ in package ‘S4Vectors’
+Creating a generic function for ‘cov’ from package ‘stats’ in package ‘S4Vectors’
+Creating a generic function for ‘cor’ from package ‘stats’ in package ‘S4Vectors’
+Creating a generic function for ‘smoothEnds’ from package ‘stats’ in package ‘S4Vectors’
+Creating a generic function for ‘runmed’ from package ‘stats’ in package ‘S4Vectors’
+Creating a generic function for ‘nchar’ from package ‘base’ in package ‘S4Vectors’
+Creating a generic function for ‘substr’ from package ‘base’ in package ‘S4Vectors’
+Creating a generic function for ‘substring’ from package ‘base’ in package ‘S4Vectors’
+Creating a generic function for ‘chartr’ from package ‘base’ in package ‘S4Vectors’
+Creating a generic function for ‘tolower’ from package ‘base’ in package ‘S4Vectors’
+Creating a generic function for ‘toupper’ from package ‘base’ in package ‘S4Vectors’
+Creating a generic function for ‘sub’ from package ‘base’ in package ‘S4Vectors’
+Creating a generic function for ‘gsub’ from package ‘base’ in package ‘S4Vectors’
+Creating a generic function for ‘nlevels’ from package ‘base’ in package ‘S4Vectors’
+in method for ‘coerce’ with signature ‘""data.table"",""DFrame""’: no definition for class “data.table”
+Creating a generic function for ‘complete.cases’ from package ‘stats’ in package ‘S4Vectors’
+"
+"2","** help
+"
+"2","*** installing help indices
+"
+"2","** building package indices
+"
+"2","** installing vignettes
+"
+"2","** testing if installed package can be loaded from temporary location
+"
+"2","** checking absolute paths in shared objects and dynamic libraries
+"
+"2","** testing if installed package can be loaded from final location
+"
+"2","** testing if installed package keeps a record of temporary installation path
+"
+"2","* DONE (S4Vectors)
+"
+"2","
+"
+"2",""
+"2","The downloaded source packages are in
+	'/project/.tmpRsessions/RtmpuylFpn/downloaded_packages'"
+"2",""
+"2","
+"
+"2","Installation paths not writeable, unable to update packages
+  path: /package/R-base/4.3.0/lib/R/library
+  packages:
+    boot, class, cluster, codetools, foreign, KernSmooth, lattice, mgcv, nlme, nnet, rpart,
+    spatial, survival
+  path: /package/R-cbrg/current/4.3.0
+  packages:
+    abind, anytime, ape, aplot, arrow, askpass, backports, bbmle, bdsmatrix, BH, BiocManager,
+    BiocStyle, bit, bit64, bitops, bookdown, brew, brio, broom, broom.helpers, bslib, cachem,
+    Cairo, callr, car, caTools, checkmate, circlize, classInt, cli, clue, coda, colorRamps,
+    colorspace, commonmark, corrplot, cowplot, cpp11, crayon, credentials, crosstalk, curl,
+    data.table, DBI, dbplyr, dbscan, deldir, dendextend, DEoptimR, desc, diffobj, digest, DOSE,
+    dotCall64, downlit, downloader, dplyr, dqrng, DT, e1071, enrichplot, enrichR, ensembldb,
+    evaluate, fansi, farver, fastcluster, fastDummies, fastmap, fastmatch, fields, filelock,
+    fitdistrplus, FNN, fontawesome, fs, future, future.apply, gdata, generics, GenomeInfoDb,
+    GenomicRanges, geojsonR, gert, ggforce, ggfun, ggnewscale, ggplot2, ggprism, ggraph,
+    ggrepel, ggridges, ggsci, ggstats, gh, globals, glue, gplots, gprofiler2, graphlayouts,
+    gtable, gtools, harmony, haven, hdf5r, hexbin, HGNChelper, highr, Hmisc, htmlTable,
+    htmltools, htmlwidgets, httpuv, httr2, igraph, janitor, jpeg, jsonlite, KEGGREST, knitr,
+    labelled, later, leiden, leidenAlg, lifecycle, listenv, lme4, locfit, lubridate, magick,
+    mapproj, maps, markdown, mathjaxr, MatrixModels, matrixStats, MCMCpack, metadat, metafor,
+    metap, mime, miniUI, minqa, mixsqp, modeltools, msigdbr, multcomp, multipanelfigure,
+    munsell, mvtnorm, nloptr, NLP, NMF, nnls, openssl, openxlsx, pals, parallelly, patchwork,
+    pbkrtest, pillar, pkgbuild, pkgdown, pkgload, plotly, plyr, polyclip, poweRlaw, pracma,
+    prettyunits, processx, profvis, progress, progressr, promises, ps, purrr, quantreg, R.oo,
+    R.utils, R6, ragg, RANN, raster, rbibutils, Rcpp, RcppAnnoy, RcppArmadillo, RcppEigen,
+    RcppHNSW, RcppNumerical, RcppParallel, RcppRoll, RcppTOML, RcppZiggurat, RCurl, Rdpack,
+    readr, readxl, remotes, renv, reprex, reticulate, Rfast, Rfast2, rgl, Rhdf5lib, rintrojs,
+    rjson, rlang, rliger, rmarkdown, robustbase, roxygen2, rprojroot, RSpectra, RSQLite,
+    rstudioapi, Rtsne, rvest, s2, S4Vectors, sandwich, sass, scales, scatterpie, sccore,
+    scCustomize, sctransform, scuttle, sessioninfo, Seurat, SeuratObject, sf, shadowtext,
+    shape, shiny, shinyAce, shinydashboard, shinyWidgets, Signac, slam, sm, sp, spam, SparseM,
+    spatstat.data, spatstat.explore, spatstat.geom, spatstat.random, spatstat.sparse,
+    spatstat.utils, spData, spdep, stringi, stringr, svglite, sys, systemfonts, terra,
+    testthat, textshaping, TH.data, tictoc, tidygraph, tidyr, tidyselect, tidytree, timechange,
+    tinytex, tm, topicmodels, tweenr, tximeta, tzdb, units, usethis, utf8, uuid, uwot, V8,
+    vctrs, vioplot, vipor, viridis, vroom, waldo, WGCNA, withr, wk, WriteXLS, wrMisc, xfun,
+    xgboost, XML, xml2, xopen, yaml, yulab.utils, zip, zoo
+"
+"0","install.packages(""BiocManager"")"
+"2","Installing package into '/home/imm/ndcn1484/R/x86_64-pc-linux-gnu-library/4.3'
+(as 'lib' is unspecified)
+"
+"2","trying URL 'https://www.stats.bris.ac.uk/R/src/contrib/BiocManager_1.30.25.tar.gz'
+"
+"2","Content type 'application/x-gzip'"
+"2"," length 593414 bytes (579 KB)
+"
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","="
+"2","
+"
+"2","downloaded 579 KB
+
+"
+"2","* installing *source* package ‘BiocManager’ ...
+"
+"2","** package ‘BiocManager’ successfully unpacked and MD5 sums checked
+"
+"2","** using staged installation
+"
+"2","** R
+"
+"2","** inst
+"
+"2","** byte-compile and prepare package for lazy loading
+"
+"2","** help
+"
+"2","*** installing help indices
+"
+"2","** building package indices
+"
+"2","** installing vignettes
+"
+"2","** testing if installed package can be loaded from temporary location
+"
+"2","** testing if installed package can be loaded from final location
+"
+"2","** testing if installed package keeps a record of temporary installation path
+"
+"2","* DONE (BiocManager)
+"
+"2","
+"
+"2",""
+"2","The downloaded source packages are in
+	'/project/.tmpRsessions/RtmpuylFpn/downloaded_packages'"
+"2",""
+"2","
+"

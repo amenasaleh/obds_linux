@@ -1,0 +1,18 @@
+"0","reducedDimNames(demo_sce)"
+"1","character(0)
+"
+"0","reducedDims(demo_sce)"
+"1","List"
+"1",""
+"1"," of length "
+"1",""
+"1","0"
+"1",""
+"1","
+"
+"1","names(0): 
+"
+"0","reducedDim(demo_sce)"
+"2","Error in .get_internal_missing(x, basefun = reducedDim, namefun = reducedDimNames,  : 
+  no available entries for 'reducedDim(<SingleCellExperiment>, ...)'
+"

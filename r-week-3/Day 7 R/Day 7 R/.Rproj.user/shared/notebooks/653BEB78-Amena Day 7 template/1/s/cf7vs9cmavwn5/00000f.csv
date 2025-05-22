@@ -1,0 +1,3 @@
+"0","Person <- function(name, age) {"
+"0","  new(""Person"", name = name, age = age)"
+"0","}"

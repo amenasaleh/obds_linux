@@ -1,0 +1,4 @@
+"0","#pheatmap(dds_cor, breaks=seq(from = 0.99, to = 1, length.out = 100))"
+"0","#pheatmap(dds_cor, color = colorRampPalette(rev(brewer.pal(n=7,name=""RdYlBu"")))(100) )"
+"0","#note-theirs was different colour with same command"
+"0","#difference between vst- rlog filtered, and unfiltered "

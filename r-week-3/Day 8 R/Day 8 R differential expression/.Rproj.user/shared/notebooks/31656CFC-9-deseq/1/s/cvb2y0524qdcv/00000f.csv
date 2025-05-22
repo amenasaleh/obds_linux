@@ -1,0 +1,3 @@
+"0","sample_info$genotype <- factor(sample_info$genotype, c(""Egr2_Kin"", ""Egr2_Egr3_KO""))"
+"0","sample_info$replicate <- factor(sample_info$replicate, c(1, 2, 3))"
+"0","sample_info"

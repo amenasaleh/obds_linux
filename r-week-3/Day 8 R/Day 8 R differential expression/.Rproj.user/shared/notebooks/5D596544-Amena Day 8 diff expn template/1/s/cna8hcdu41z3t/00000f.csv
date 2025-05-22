@@ -1,0 +1,8 @@
+"0","dim(counts_table)"
+"1","[1]"
+"1"," 39179"
+"1","     8"
+"1","
+"
+"0","counts_table<- as.matrix(counts_table)# THIS WAS TO BE DONE EARLIER WHILE READING TSV"
+"0","#counts_table"

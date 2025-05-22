@@ -1,0 +1,3 @@
+"0","get_age <- function(object) {"
+"0","  object@age"
+"0","}"

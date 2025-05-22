@@ -1,0 +1,4 @@
+"0","x <- dds_results %>% "
+"0","  as.data.frame() %>% "
+"0","  rownames_to_column(""gene_id"")"
+"0","write_csv(x, ""dds_results.csv"")"

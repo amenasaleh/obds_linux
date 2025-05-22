@@ -1,0 +1,6 @@
+"0","getBM("
+"0","  attributes = c(""hgnc_symbol"", ""chromosome_name"", ""start_position"", ""end_position"", ""strand""),"
+"0","  filters = ""hgnc_symbol"","
+"0","  values = human_symbols,"
+"0","  mart = mart"
+"0",")"

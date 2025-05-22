@@ -1,0 +1,5 @@
+"0","plotPCA(dds_rlog, intgroup=""cell_type"", ntop=500 ) +
+    coord_fixed(ratio = 5)
+"
+"2","[38;5;232mCoordinate system already present. Adding new coordinate system, which will replace the
+existing one.[39m"

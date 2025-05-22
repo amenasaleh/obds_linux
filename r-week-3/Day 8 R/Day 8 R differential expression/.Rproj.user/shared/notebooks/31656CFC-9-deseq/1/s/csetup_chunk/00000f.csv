@@ -1,0 +1,5 @@
+"0","#| label: setup"
+"0","#| include: false"
+"0","library(tidyverse)"
+"0","library(DESeq2)"
+"0","options(width = 120)"

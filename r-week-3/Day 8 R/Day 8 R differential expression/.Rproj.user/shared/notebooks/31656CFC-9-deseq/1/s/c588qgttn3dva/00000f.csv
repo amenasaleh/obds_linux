@@ -1,0 +1,2 @@
+"0","colnames(counts_table) <- colnames(counts_table) %>%"
+"0","    str_replace("".bam"","""")"

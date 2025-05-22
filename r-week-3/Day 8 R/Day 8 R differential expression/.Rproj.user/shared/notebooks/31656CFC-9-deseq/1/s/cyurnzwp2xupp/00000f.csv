@@ -1,0 +1,4 @@
+"0","tibble("
+"0","    counts_table = colnames(counts_table),"
+"0","    sample_info = sample_info$sample_id"
+"0",")"

@@ -1,0 +1,3 @@
+"0","library(pheatmap)"
+"0","dds_cor <- cor(assay(dds_rlog), method=""spearman"")"
+"0","pheatmap(dds_cor)"

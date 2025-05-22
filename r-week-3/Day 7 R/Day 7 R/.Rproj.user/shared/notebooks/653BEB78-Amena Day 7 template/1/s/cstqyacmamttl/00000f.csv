@@ -1,0 +1,5 @@
+"0","setClass(""Person"","
+"0","  representation("
+"0","    name = ""character"","
+"0","    age = ""numeric"")"
+"0","  )"

@@ -1,0 +1,7 @@
+"0","sample_info$cell_type <- factor(sample_info$cell_type, levels = c(""CD8"", ""CD4""))"
+"0","levels(sample_info$cell_type)"
+"1","[1]"
+"1"," ""CD8"""
+"1"," ""CD4"""
+"1","
+"

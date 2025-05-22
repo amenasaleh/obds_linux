@@ -1,0 +1,9 @@
+"0","mart <- useMart("
+"0","  biomart = ""ENSEMBL_MART_ENSEMBL"","
+"0","  dataset = ""hsapiens_gene_ensembl"","
+"0","  host = ""https://may2021.archive.ensembl.org"""
+"0",")"
+"0","mart"
+"1","Object of class 'Mart':
+  Using the ENSEMBL_MART_ENSEMBL BioMart database
+  Using the hsapiens_gene_ensembl dataset"

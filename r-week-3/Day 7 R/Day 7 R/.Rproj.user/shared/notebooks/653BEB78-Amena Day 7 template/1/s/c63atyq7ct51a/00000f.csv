@@ -1,0 +1,5 @@
+"0","mart <- useMart(""ENSEMBL_MART_ENSEMBL"", host = ""https://may2021.archive.ensembl.org"")"
+"0","mart"
+"1","Object of class 'Mart':
+  Using the ENSEMBL_MART_ENSEMBL BioMart database
+  No dataset selected."

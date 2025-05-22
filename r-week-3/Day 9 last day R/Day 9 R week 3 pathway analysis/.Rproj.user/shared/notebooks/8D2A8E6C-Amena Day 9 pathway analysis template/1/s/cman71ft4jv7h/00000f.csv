@@ -1,0 +1,3 @@
+"0",""
+"0","hallmark_list <- split(x = h_gene_sets_filtered$ensembl_gene,"
+"0","                       f = h_gene_sets_filtered$gs_name)"

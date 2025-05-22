@@ -1,0 +1,4 @@
+"0","#| eval: false"
+"0","browseVignettes(""Biostrings"")"
+"0","vignette(""BiostringsQuickOverview"")"
+"0","#vignette() this opens all the vignette in a separate window. open specific airway put in quotes one vignette(""airway"")"

@@ -1,0 +1,4 @@
+"0","truseq_adapters <- Biostrings::readDNAStringSet(""data/TruSeq3-PE-2.fa"")"
+"2","Error in .Call2(""new_input_filexp"", filepath, PACKAGE = ""XVector"") : 
+  cannot open file 'data/TruSeq3-PE-2.fa'
+"

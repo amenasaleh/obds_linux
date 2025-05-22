@@ -1,0 +1,3 @@
+"0","sample_metadata <- read.csv(""/project/shared/r/1_r_data_science/8-bioconductor/summarized_experiment/sample_metadata.csv"", "
+"0","row.names =1)"
+"0","head(sample_metadata)"

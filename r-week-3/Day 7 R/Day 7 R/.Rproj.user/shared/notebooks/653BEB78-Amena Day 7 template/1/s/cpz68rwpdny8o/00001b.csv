@@ -1,0 +1,108 @@
+"0","getMethod(""[["", signature =""BSgenome"")
+"
+"1","Method Definition"
+"1",""
+"1",""
+"1",""
+"1",":
+
+"
+"1","function (x, i, j, ...) 
+"
+"1","{
+"
+"1","    if (nargs() >= 3L) 
+"
+"1","        stop(""too many subscripts"")
+"
+"1","    subscripts <- list(...)
+"
+"1","    if (!missing(i)) 
+"
+"1","        subscripts$i <- i
+"
+"1","    if (!missing(j)) 
+"
+"1","        subscripts$j <- j
+"
+"1","    if (length(subscripts) == 0L) 
+"
+"1","        stop(""no index specified"")
+"
+"1","    i <- subscripts[[1L]]
+"
+"1","    if (length(i) < 1L) 
+"
+"1","        stop(""attempt to select less than one element"")
+"
+"1","    if (length(i) > 1L) 
+"
+"1","        stop(""attempt to select more than one element"")
+"
+"1","    if (is.character(i)) {
+"
+"1","        user_seqname <- try(match.arg(i, names(x)), silent = TRUE)
+"
+"1","        if (is(user_seqname, ""try-error"")) 
+"
+"1","            stop(""no such sequence"")
+"
+"1","    }
+"
+"1","    else {
+"
+"1","        if (!is.numeric(i) || is.na(i)) 
+"
+"1","            stop(""no such sequence"")
+"
+"1","        i <- as.integer(i)
+"
+"1","        if (i < 1L || length(x) < i) 
+"
+"1","            stop(""no such sequence"")
+"
+"1","        user_seqname <- names(x)[i]
+"
+"1","    }
+"
+"1","    idx <- match(user_seqname, x@user_seqnames)
+"
+"1","    if (is.na(idx)) {
+"
+"1","        seqname <- user_seqname
+"
+"1","    }
+"
+"1","    else {
+"
+"1","        seqname <- names(x@user_seqnames)[[idx]]
+"
+"1","    }
+"
+"1","    .getBSgenomeSequence(x, seqname, user_seqname)
+"
+"1","}
+"
+"1","<bytecode: 0x56229650a5b8>
+"
+"1","<environment: namespace:BSgenome>
+"
+"1","
+Signatures:
+"
+"1","       "
+"1"," x         "
+"1"," i    "
+"1"," j    "
+"1","
+target "
+"1"," ""BSgenome"""
+"1"," ""ANY"""
+"1"," ""ANY"""
+"1","
+defined"
+"1"," ""BSgenome"""
+"1"," ""ANY"""
+"1"," ""ANY"""
+"1","
+"

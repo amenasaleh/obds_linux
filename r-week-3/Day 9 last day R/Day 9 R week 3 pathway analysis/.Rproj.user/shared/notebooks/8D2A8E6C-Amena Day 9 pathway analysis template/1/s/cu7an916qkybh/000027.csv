@@ -1,0 +1,7 @@
+"0","?gost() # Get help for function"
+"0",""
+"0","# Write ORA query"
+"0","gost_results_obj <- gost(upreg_gene_ids, ""mmusculus"", domain_scope= ""custom_annotated"", custom_bg=all_gene_tested_ids ,significant=TRUE, correction_method = ""g_SCS"", sources = NULL)"
+"0","head(gost_results_obj)"
+"1","$result
+"

@@ -1,0 +1,6 @@
+"0","library(RColorBrewer)"
+"0","dds_dist <- dist(t(assay(dds_rlog)))"
+"0","blue_colors <- colorRampPalette( rev(brewer.pal(9, ""Blues"")) )(255)"
+"0","pheatmap(as.matrix(dds_dist),"
+"0","    color = blue_colors"
+"0",")"
